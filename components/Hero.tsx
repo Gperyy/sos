@@ -36,9 +36,10 @@ const Hero: React.FC = () => {
                 Professional Aerobatic Pilot
               </span>
             </div>
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black italic leading-[1.1] tracking-wider uppercase drop-shadow-2xl pr-4 overflow-visible">
-              Semin<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 pr-4">Öztürk Şener</span>
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black italic leading-[1.2] tracking-widest md:tracking-wider uppercase drop-shadow-2xl pr-6 md:pr-4 overflow-visible">
+              SEMİN<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 pr-2">ÖZTÜRK</span><br className="sm:hidden" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 pr-6 md:pr-4"> ŞENER</span>
             </h1>
             <h2 className="text-gray-100 text-lg md:text-2xl font-bold italic max-w-2xl mt-4 leading-relaxed drop-shadow-lg">
               Turkey's First Professional Female Aerobatic Pilot.

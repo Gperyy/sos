@@ -33,7 +33,7 @@ const Header: React.FC = () => {
               </svg>
             </div>
             <h2 className="text-[#181210] dark:text-white text-xl font-black italic uppercase tracking-normal pr-1">
-              Semin Öztürk Şener
+              SEMİN ÖZTÜRK ŞENER
             </h2>
           </div>
           <nav className="hidden md:flex items-center gap-8">
