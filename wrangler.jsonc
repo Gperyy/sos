@@ -1,0 +1,13 @@
+{
+  "name": "aerobatic-pilot",
+  "compatibility_date": "2026-01-27",
+  "assets": {
+    "directory": "./dist"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "SOS_DATA",
+      "id": "YOUR_KV_NAMESPACE_ID"
+    }
+  ]
+}

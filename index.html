@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="tr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Semin Öztürk Şener - Dynamic Aerobatic Pilot</title>
+    <meta name="description" content="Semin Öztürk Şener - Türkiye'nin İlk Profesyonel Kadın Akrobasi Pilotu" />
+    <title>Semin Öztürk Şener - Professional Aerobatic Pilot</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,11 +14,10 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
       tailwind.config = {
-        darkMode: "class",
         theme: {
           extend: {
             colors: {
-              primary: "#FF542E",
+              primary: "#E02F3C",
               "background-light": "#f8f6f5",
               "background-dark": "#181210",
               "surface-dark": "#23130f",
@@ -28,16 +28,47 @@
             },
             animation: {
               "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              "fade-in-up": "fadeInUp 1s ease-out forwards",
-              shimmer: "shimmer 1s infinite",
+              "fade-in-up": "fadeInUp 0.6s ease-out forwards",
+              "fade-in-down": "fadeInDown 0.6s ease-out forwards",
+              "fade-in": "fadeIn 0.5s ease-out forwards",
+              "slide-in-right": "slideInRight 0.3s ease-out forwards",
+              "slide-in-left": "slideInLeft 0.3s ease-out forwards",
+              shimmer: "shimmer 1.5s infinite",
+              "scale-in": "scaleIn 0.3s ease-out forwards",
+              float: "float 3s ease-in-out infinite",
             },
             keyframes: {
               fadeInUp: {
-                "0%": { opacity: "0", transform: "translateY(20px)" },
+                "0%": { opacity: "0", transform: "translateY(30px)" },
                 "100%": { opacity: "1", transform: "translateY(0)" },
               },
+              fadeInDown: {
+                "0%": { opacity: "0", transform: "translateY(-30px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              fadeIn: {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              slideInRight: {
+                "0%": { opacity: "0", transform: "translateX(30px)" },
+                "100%": { opacity: "1", transform: "translateX(0)" },
+              },
+              slideInLeft: {
+                "0%": { opacity: "0", transform: "translateX(-30px)" },
+                "100%": { opacity: "1", transform: "translateX(0)" },
+              },
               shimmer: {
+                "0%": { transform: "translateX(-100%)" },
                 "100%": { transform: "translateX(100%)" },
+              },
+              scaleIn: {
+                "0%": { opacity: "0", transform: "scale(0.9)" },
+                "100%": { opacity: "1", transform: "scale(1)" },
+              },
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
               },
             },
           },
@@ -55,32 +86,52 @@
         background: #f1f1f1;
       }
       ::-webkit-scrollbar-thumb {
-        background: #ff542e;
+        background: #E02F3C;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #e04826;
+        background: #C91F2B;
       }
       .text-glow {
-        text-shadow: 0 0 20px rgba(255, 84, 46, 0.5);
+        text-shadow: 0 0 20px rgba(224, 47, 60, 0.5);
       }
       .text-stroke {
         -webkit-text-stroke: 1px rgba(255, 255, 255, 0.1);
         color: transparent;
       }
+      /* Focus visible styles */
+      *:focus-visible {
+        outline: 2px solid #E02F3C;
+        outline-offset: 2px;
+      }
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+      /* Scroll animation helper */
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Stagger delay classes */
+      .stagger-1 { transition-delay: 0.1s; }
+      .stagger-2 { transition-delay: 0.2s; }
+      .stagger-3 { transition-delay: 0.3s; }
+      .stagger-4 { transition-delay: 0.4s; }
+      .stagger-5 { transition-delay: 0.5s; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "react/": "https://esm.sh/react@^19.2.4/"
-  }
-}
-</script>
-</head>
-  <body class="bg-background-light dark:bg-background-dark text-[#181210] dark:text-white overflow-x-hidden">
+  </head>
+  <body class="bg-background-light text-[#181210] overflow-x-hidden">
     <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

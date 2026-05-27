@@ -1,71 +1,63 @@
 import React from "react";
-import { ExternalLink, Heart } from "lucide-react";
-import { GalleryItem } from "../types";
-
-const galleryItems: GalleryItem[] = [
-  {
-    id: 1,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDdXODYt0P9m7FouvS5e_7i6tjed_1LDo8GbSgyIv7f7ZXwU2FrkP9bn8rqEvpf_g4GKbcBjmUAMUQH763P_TeBvoolF7sLgZcUFrpQ-KZhgh-9TyLHMdJQmhYK-cYBkDgh0JepMDtVgDG2DftHFQm4eIX2wO8XWS2H1CVvZ-jdz2_TUosfWZmag5oGw3KwFJWXQq6q7iDHIYe__0nWmoPKLeYem6BKRbGByx62SRpeL3obZ7wL32AY4VlxPDjGw0jNg7drRHLWKE0",
-    alt: "Vertical view of a red biplane climbing straight up into a blue sky"
-  },
-  {
-    id: 2,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAfRAICK8zane0A9hqus2sN9uWGY7Efqhq4hbgDi8VjmiygcT2G-Stc4yDok2FAUISkFH1Nvb-ay13RzuJsYWbcQn1v7SBwfpYSx8_Jh-a7mWRL3vRrT1EGif-TLQsvRmV7B5ND9-zSLRVAett6ujGMa2EcfkH5KcQIPznEBYVUs4oyDRhHX3TRDmRAjQ18zvrOvGgb4QYAe_crjrdXp9pmwd8eEAyCfRj-B5T0AbGH07bfGCIfKOPf8A6XAzRfGOZ14N3ixZJw3CI",
-    alt: "Semin Öztürk Şener standing next to her plane waving to the crowd"
-  },
-  {
-    id: 3,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDUQUwQmYmdJa3iv3cacJfkR8k8XZWI6MmztazvTV_oILp_0RkPWA3mI9XV7gcrMJZY2_hNxl2jaRVjBilQJtUORwydOZjAnVrJkX0F1rSHLAoTtC16moOOV8y-tP2h7BG1EXwoKxcOnPguchqEu2gnzLZo5TTdICrtOp2ZvWFl5TX_vsJ5SdqCCTKoSShnYJYho1MRsAHP29RJr-hXyRl_WhsjNESbxvUzEX53HK_cQ35AlUKCihVy2czyqoSnAH90T3RxoFzLAlw",
-    alt: "Cockpit view looking out over the wing during flight"
-  },
-  {
-    id: 4,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCal4pdqjihAt0I7sON49gvAQ6Lejm6hNzL74PwSo122JQKbrUuw82VBAJ4Bx99GM8HPr2BfJFIfY1hoPt-u1CwSiLKV-MojXlFT3lZ7-4LViVASz7MtncwWQjb64En6WFijHCf3SF2420cX33Q6UlCRXBYxIPnnhjJ45Pw-OlsrxkP-BSIAfZgBxoqeadv3qV3ESCoDtMRU_ToOzP9ilDuM8-koRJ7tjL2f00rilLt14ZkmLS91es4uBah-0CgP1S1NvSIahKy-dQ",
-    alt: "Biplane performing a loop with smoke trail forming a circle"
-  }
-];
+import { ExternalLink } from "lucide-react";
+import { SectionHeader, AnimatedSection } from "./ui";
 
 const Gallery: React.FC = () => {
   return (
-    <section className="py-24 bg-background-light dark:bg-background-dark relative">
+    <section className="py-24 bg-background-light relative">
       <div className="layout-container max-w-[1280px] mx-auto px-4 sm:px-8">
+        {/* Header */}
         <div className="flex items-center justify-between mb-12">
-          <div className="flex items-center gap-4">
-            <div className="h-10 w-2 bg-[#FF542E] transform skew-x-[-15deg] shadow-[0_0_15px_#ff542e]"></div>
-            <h2 className="text-4xl font-black italic tracking-tighter uppercase text-[#181210] dark:text-white">
-              Gallery
-            </h2>
-          </div>
+          <AnimatedSection>
+            <SectionHeader
+              title="Instagram"
+              gradient
+              gradientColors="from-[#833AB4] via-[#FD1D1D] to-[#F77737]"
+              className="mb-0"
+            />
+          </AnimatedSection>
           <a
-            href="https://instagram.com"
-            className="text-[#FF542E] hover:text-[#ff6b4a] font-bold italic text-sm flex items-center gap-1 group"
+            href="https://instagram.com/semin_ozturk_sener"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-gradient bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] bg-clip-text text-transparent font-bold italic text-sm hover:opacity-80 transition-opacity"
           >
+            <svg className="w-5 h-5 text-[#E02F3C]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
             @semin_ozturk_sener
-            <ExternalLink className="w-4 h-4 group-hover:rotate-45 transition-transform" />
+            <ExternalLink className="w-4 h-4" />
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {galleryItems.map((item) => (
-            <div
-              key={item.id}
-              className="aspect-square overflow-hidden relative group cursor-pointer shadow-lg transform hover:-translate-y-2 transition-all duration-300 hover:shadow-[#FF542E]/20 hover:z-10"
-            >
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-[#FF542E]/20 transition-colors z-10 flex items-center justify-center border-4 border-transparent group-hover:border-[#FF542E]/50">
-                <Heart className="text-white w-10 h-10 opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md transform scale-0 group-hover:scale-100 duration-300" />
-              </div>
-              <div
-                className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2"
-                style={{ backgroundImage: `url("${item.image}")` }}
-                role="img"
-                aria-label={item.alt}
-              ></div>
-            </div>
-          ))}
+        {/* Elfsight Instagram Feed */}
+        <div className="elfsight-app-19180563-b34b-4a79-a5e9-225f772a7be6"></div>
+
+        {/* Direct link to Instagram */}
+        <div className="mt-12 text-center">
+          <a
+            href="https://instagram.com/semin_ozturk_sener"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white px-8 py-4 rounded font-black italic text-lg uppercase tracking-wider hover:opacity-90 transition-all hover:scale-105 shadow-lg"
+          >
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            Instagram'da Takip Et
+          </a>
         </div>
       </div>
     </section>
   );
 };
+
+// Load Elfsight script
+if (typeof window !== "undefined") {
+  const script = document.createElement("script");
+  script.src = "https://elfsightcdn.com/platform.js";
+  script.async = true;
+  document.body.appendChild(script);
+}
 
 export default Gallery;
