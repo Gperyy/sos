@@ -1,100 +1,134 @@
 import React from "react";
-import { Calendar, MapPin, ExternalLink } from "lucide-react";
+import { ExternalLink, MapPin, Clock } from "lucide-react";
+import { splitEvents, formatDate } from "./data/events";
+import type { EventData } from "./data/events";
 
-interface Event {
-  id: number;
-  date: string;
-  day: string;
-  month: string;
-  title: string;
-  location: string;
-  description?: string;
-  isHighlighted?: boolean;
-  website?: string;
-}
+// Etkinlik Takvimi — ŞU ANKİ düzen + MAYIS font (Lexend) & renk/buton (kırmızı skew/glow).
+// Veriler: components/data/events.ts (yaklaşan/geçmiş tarihe göre otomatik ayrılır).
 
-const upcomingEvents: Event[] = [
-  { id: 1, date: "13-14 Haziran 2026", day: "13-14", month: "Haz", title: "RC Model Festivali", location: "Sivrihisar Havacılık Merkezi", description: "Model uçak ve drone tutkunlarını bir araya getiren festival." },
-  { id: 2, date: "27 Haziran 2026", day: "27", month: "Haz", title: "Kulüp Balosu", location: "Sivrihisar", description: "Yıllık geleneksel kulüp balosu." },
-  { id: 3, date: "28 Haziran 2026", day: "28", month: "Haz", title: "Uçmayan Köy Kalmasın", location: "Sivrihisar", description: "Çocuklara havacılık sevgisini aşılayan sosyal sorumluluk projesi." },
-  { id: 4, date: "17-23 Ağustos 2026", day: "17-23", month: "Ağu", title: "ASINFURA 2", location: "Sivrihisar Havacılık Merkezi", description: "Uluslararası akrobasi eğitim kampı." },
-  { id: 5, date: "29-30 Ağustos 2026", day: "29-30", month: "Ağu", title: "Zafer Bayramı & Havacılık Haftası", location: "Sivrihisar", description: "30 Ağustos Zafer Bayramı ve Türk Havacılık Haftası kutlamaları, uçurtma şenliği." },
-  { id: 6, date: "19-20 Eylül 2026", day: "19-20", month: "Eyl", title: "SHG Airshow 2026", location: "Sivrihisar Hava Gösterileri", description: "Türkiye'nin en büyük hava gösterisi organizasyonu. Binlerce seyirci, düzinelerce pilot ve unutulmaz anlar.", isHighlighted: true, website: "https://shgairshow.com" },
-  { id: 7, date: "2 Ekim 2026", day: "02", month: "Eki", title: "Geleneksel Cumhuriyet Fotoğrafı", location: "Sivrihisar", description: "29 Ekim Cumhuriyet Bayramı için geleneksel toplu fotoğraf çekimi." },
-  { id: 8, date: "10 Kasım 2026", day: "10", month: "Kas", title: "ATA'ya Saygı Uçuşu", location: "Sivrihisar", description: "Ulu Önder Mustafa Kemal Atatürk'ü anma uçuşu." },
-];
+// Afiş varsa tıklayınca tam boy açılır
+const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) => (
+  <div data-reveal-img className={`relative overflow-hidden bg-black/5 border border-black/10 ${className}`}>
+    {poster ? (
+      <a href={poster} target="_blank" rel="noopener noreferrer" aria-label={`${alt} afişini tam boy aç`}>
+        <img src={poster} alt={`${alt} afişi`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
+      </a>
+    ) : (
+      <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(224,47,60,0.1),transparent_60%)]">
+        <span className="text-black/20 text-[11px] font-black italic tracking-[0.3em] uppercase">Poster</span>
+      </div>
+    )}
+  </div>
+);
+
+const SubHeading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="flex items-center gap-3 mb-10">
+    <span className="text-[#E02F3C] text-xs font-black italic tracking-[0.3em] uppercase">{children}</span>
+    <span className="flex-1 h-px bg-gray-200"></span>
+  </div>
+);
+
+const EventCard: React.FC<{ event: EventData; past?: boolean }> = ({ event, past }) => {
+  const d = formatDate(event);
+  return (
+    <article className="group" data-reveal>
+      <PosterFrame poster={event.poster} alt={event.title} className="aspect-[3/4]" />
+      <div className="mt-5">
+        <span className={`text-xs font-black italic tracking-wider uppercase ${past ? "text-gray-400" : "text-[#E02F3C]"}`}>
+          {d.day} {d.month} {d.year}
+        </span>
+        <h4 lang={event.lang} className="text-xl md:text-2xl font-black italic uppercase text-[#181210] mt-1.5 leading-tight">{event.title}</h4>
+        <div className="flex items-center gap-1.5 text-gray-500 text-sm mt-2 font-medium">
+          <MapPin className="w-3.5 h-3.5 text-[#E02F3C]" /> {event.location}
+        </div>
+      </div>
+    </article>
+  );
+};
 
 const Events: React.FC = () => {
+  const { upcoming, past } = splitEvents();
+  const [featured, ...moreUpcoming] = upcoming;
+  const fd = featured ? formatDate(featured) : undefined;
+  const pastWithPoster = past.filter((e) => e.poster);
+
   return (
-    <section id="events" className="py-24 bg-background-light">
-      <div className="layout-container max-w-[1280px] mx-auto px-4 sm:px-8">
-        {/* Section Header */}
-        <div className="flex items-center gap-4 mb-16">
-          <div className="h-10 w-2 bg-[#E02F3C] transform skew-x-[-15deg] shadow-[0_0_15px_#E02F3C]"></div>
-          <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-[#181210]">
-            Etkinlik Takvimi
-          </h2>
+    <section id="events" className="py-24 bg-background-light font-['Lexend']">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
+        {/* Mayıs başlık */}
+        <div className="flex items-center gap-4 mb-4" data-reveal>
+          <div className="h-10 w-2 bg-[#E02F3C] transform skew-x-[-15deg] shadow-[0_0_15px_rgba(224,47,60,0.5)]"></div>
+          <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-[#181210]">Etkinlik Takvimi</h2>
         </div>
+        <p className="text-gray-500 text-lg font-medium mb-14 max-w-2xl" data-reveal>
+          2026 Semin Öztürk Şener Akrobasi Gösterileri
+        </p>
 
-        {/* Main Title */}
-        <div className="mb-12">
-          <h3 className="text-3xl md:text-4xl font-black italic text-[#E02F3C] uppercase leading-tight">
-            2026 Semin Öztürk Şener Akrobasi Gösterileri
-          </h3>
-        </div>
-
-        {/* Full Calendar Section */}
-        <div id="full-calendar" className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {upcomingEvents.map((event) => (
-            <div
-              key={event.id}
-              className={`bg-white p-6 shadow-lg transition-all hover:shadow-xl border-l-4 ${
-                event.isHighlighted
-                  ? "border-[#E02F3C] bg-gradient-to-r from-[#E02F3C]/5 to-transparent"
-                  : "border-gray-200 hover:border-[#E02F3C]"
-              }`}
-            >
-              <div className="flex gap-4">
-                <div className={`flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 transform skew-x-[-10deg] ${
-                  event.isHighlighted
-                    ? "bg-[#E02F3C] shadow-[0_0_20px_rgba(224,47,60,0.4)]"
-                    : "bg-gray-100"
-                }`}>
-                  <span className={`font-black text-lg italic skew-x-[10deg] ${event.isHighlighted ? "text-white" : "text-[#E02F3C]"}`}>
-                    {event.day}
-                  </span>
-                  <span className={`text-xs font-bold uppercase skew-x-[10deg] ${event.isHighlighted ? "text-white/80" : "text-gray-500"}`}>
-                    {event.month}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <h4 className={`text-xl font-black italic uppercase mb-1 ${event.isHighlighted ? "text-[#E02F3C]" : "text-[#181210]"}`}>
-                    {event.title}
-                  </h4>
-                  <div className="flex items-center gap-1 text-gray-500 text-sm mb-2">
-                    <MapPin className="w-3 h-3 text-[#E02F3C]" />
-                    <span className="font-medium">{event.location}</span>
-                  </div>
-                  {event.description && (
-                    <p className="text-gray-600 text-sm font-medium mb-3">
-                      {event.description}
-                    </p>
-                  )}
-                  {event.isHighlighted && event.website && (
-                    <a
-                      href={event.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-[#E02F3C] text-white px-4 py-2 font-black italic uppercase text-sm hover:bg-[#ff4d5a] transition-colors"
-                    >
-                      Web Sitesi <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
+        {/* Sıradaki etkinlik */}
+        {featured && fd ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-20 items-center">
+            <div className="lg:col-span-5 group">
+              <PosterFrame poster={featured.poster} alt={featured.title} className="aspect-[3/4]" />
             </div>
-          ))}
-        </div>
+            <div className="lg:col-span-7" data-reveal>
+              <span className="inline-block bg-[#E02F3C] text-white text-xs font-black italic uppercase tracking-wider px-4 py-1.5 skew-x-[-10deg] shadow-[0_0_15px_rgba(224,47,60,0.5)] mb-5">
+                <span className="block skew-x-[10deg]">Sıradaki Etkinlik · {fd.day} {fd.month} {fd.year}</span>
+              </span>
+              <h3 lang={featured.lang} className="text-4xl md:text-5xl font-black italic uppercase text-[#181210] leading-none">{featured.title}</h3>
+              {featured.description && (
+                <p className="text-gray-600 text-lg font-medium leading-relaxed mt-6 max-w-xl">{featured.description}</p>
+              )}
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-gray-500 text-sm mt-5 font-medium">
+                <span className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#E02F3C]" /> {featured.location}
+                </span>
+                {featured.time && (
+                  <span className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-[#E02F3C]" /> Saat {featured.time}
+                  </span>
+                )}
+              </div>
+              {featured.website && (
+                <a
+                  href={featured.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-block bg-[#E02F3C] hover:bg-[#FF4D5A] text-white px-8 py-4 font-black italic text-sm uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(224,47,60,0.5)] hover:shadow-[0_0_30px_rgba(224,47,60,0.7)] skew-x-[-10deg]"
+                >
+                  <span className="flex items-center gap-2 skew-x-[10deg]">Web Sitesi <ExternalLink className="w-4 h-4" /></span>
+                </a>
+              )}
+            </div>
+          </div>
+        ) : (
+          <p className="mb-20 text-[#181210] text-2xl font-black italic uppercase" data-reveal>
+            Yeni etkinlikler yakında duyurulacak.
+          </p>
+        )}
+
+        {/* Diğer yaklaşan etkinlikler */}
+        {moreUpcoming.length > 0 && (
+          <div className="mb-20">
+            <SubHeading>Yaklaşan Etkinlikler</SubHeading>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12">
+              {moreUpcoming.map((e) => (
+                <EventCard key={e.id} event={e} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Geçmiş etkinlikler — en yeni önce; yalnızca afişi olanlar gösterilir */}
+        {pastWithPoster.length > 0 && (
+          <>
+            <SubHeading>Geçmiş Etkinlikler</SubHeading>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12">
+              {pastWithPoster.map((e) => (
+                <EventCard key={e.id} event={e} past />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
