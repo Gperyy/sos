@@ -6,20 +6,21 @@ import type { EventData } from "./data/events";
 // Etkinlik Takvimi — ŞU ANKİ düzen + MAYIS font (Lexend) & renk/buton (kırmızı skew/glow).
 // Veriler: components/data/events.ts (yaklaşan/geçmiş tarihe göre otomatik ayrılır).
 
-// Afiş varsa tıklayınca tam boy açılır
-const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) => (
-  <div data-reveal-img className={`relative overflow-hidden bg-black/5 border border-black/10 ${className}`}>
-    {poster ? (
-      <a href={poster} target="_blank" rel="noopener noreferrer" aria-label={`${alt} afişini tam boy aç`}>
-        <img src={poster} alt={`${alt} afişi`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
+// Afiş varsa kendi oranında, kırpılmadan; tıklayınca tam boy açılır
+const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) =>
+  poster ? (
+    <div data-reveal-img className={`overflow-hidden border border-black/10 ${className}`}>
+      <a href={poster} target="_blank" rel="noopener noreferrer" aria-label={`${alt} afişini tam boy aç`} className="block">
+        <img src={poster} alt={`${alt} afişi`} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
       </a>
-    ) : (
+    </div>
+  ) : (
+    <div data-reveal-img className={`relative aspect-[3/4] overflow-hidden bg-black/5 border border-black/10 ${className}`}>
       <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(224,47,60,0.1),transparent_60%)]">
         <span className="text-black/20 text-[11px] font-black italic tracking-[0.3em] uppercase">Poster</span>
       </div>
-    )}
-  </div>
-);
+    </div>
+  );
 
 const SubHeading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="flex items-center gap-3 mb-10">
@@ -32,7 +33,7 @@ const EventCard: React.FC<{ event: EventData; past?: boolean }> = ({ event, past
   const d = formatDate(event);
   return (
     <article className="group" data-reveal>
-      <PosterFrame poster={event.poster} alt={event.title} className="aspect-[3/4]" />
+      <PosterFrame poster={event.poster} alt={event.title} />
       <div className="mt-5">
         <span className={`text-xs font-black italic tracking-wider uppercase ${past ? "text-gray-400" : "text-[#E02F3C]"}`}>
           {d.day} {d.month} {d.year}
@@ -68,7 +69,7 @@ const Events: React.FC = () => {
         {featured && fd ? (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 mb-20 items-center">
             <div className="lg:col-span-5 group">
-              <PosterFrame poster={featured.poster} alt={featured.title} className="aspect-[3/4]" />
+              <PosterFrame poster={featured.poster} alt={featured.title} />
             </div>
             <div className="lg:col-span-7" data-reveal>
               <span className="inline-block bg-[#E02F3C] text-white text-xs font-black italic uppercase tracking-wider px-4 py-1.5 skew-x-[-10deg] shadow-[0_0_15px_rgba(224,47,60,0.5)] mb-5">
@@ -110,7 +111,7 @@ const Events: React.FC = () => {
         {moreUpcoming.length > 0 && (
           <div className="mb-20">
             <SubHeading>Yaklaşan Etkinlikler</SubHeading>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 items-start">
               {moreUpcoming.map((e) => (
                 <EventCard key={e.id} event={e} />
               ))}
@@ -122,7 +123,7 @@ const Events: React.FC = () => {
         {pastWithPoster.length > 0 && (
           <>
             <SubHeading>Geçmiş Etkinlikler</SubHeading>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 items-start">
               {pastWithPoster.map((e) => (
                 <EventCard key={e.id} event={e} past />
               ))}

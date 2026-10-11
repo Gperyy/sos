@@ -1,6 +1,5 @@
 import React from "react";
 import { Instagram, ArrowUpRight } from "lucide-react";
-import { SectionHeader } from "./ui";
 
 const IG_URL = "https://www.instagram.com/semin.ozturk/";
 const IG_HANDLE = "@semin.ozturk";
@@ -23,14 +22,17 @@ const Gallery: React.FC = () => {
     <section className="py-28 md:py-36 bg-paper">
       <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
         <div className="flex items-end justify-between gap-6 mb-14 flex-wrap">
-          <SectionHeader eyebrow="Instagram" title="Gökyüzünden Kareler" className="" />
+          <div className="flex items-center gap-4" data-reveal>
+            <div className="reveal-bar h-10 w-2 flex-shrink-0 bg-[#E02F3C] transform skew-x-[-15deg] shadow-[0_0_15px_rgba(224,47,60,0.5)]"></div>
+            <h2 lang="en" className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-[#E02F3C] pr-1">Instagram</h2>
+          </div>
           <a
             href={IG_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2 text-ink/60 hover:text-ink text-[12px] tracking-[0.18em] uppercase font-medium transition-colors"
           >
-            <Instagram className="w-4 h-4" /> {IG_HANDLE}
+            <Instagram className="w-4 h-4" /> <span lang="en">{IG_HANDLE}</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>

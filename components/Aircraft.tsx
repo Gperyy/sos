@@ -140,7 +140,7 @@ const Aircraft: React.FC = () => {
                 Uçuşa başladıktan sonra geçen 34 sene boyunca sadece profesyonel havacılıkla iştigal eden ve Türkiye’de sivil havacılık dalında bir çok ’ilk’e imza atan Ali İsmet Öztürk, Ticari Helikopter ve Uçak Pilot lisanslarına, çok motorlu helikopter ve uçak uçuş sertifikasına, uçuş öğretmeni ve alet uçuşu sertifikalarına sahip Türk Havacısı konumunda. Öztürk, aynı zamanda Uçak ve Helikopter bakım teknisyeni lisansına sahip. 50’den fazla değişik hava aracında uçuş tecrübesi olan Ali İsmet Öztürk’ün toplam uçuşu 5500 saatin üzerinde.
               </p>
               <p>
-                Halen, Sivrihisar Havacılık Merkezinde uçan Ali ismet Öztürk, bütün tecrübesini Türk Gençleriyle paylaşmaya adamıştır.
+                Halen, Sivrihisar Havacılık Merkezinde uçan Ali ismet Öztürk, bütün tecrübesini Türk Gençleriyle paylaşmaya adamıştır.
               </p>
             </div>
           </div>

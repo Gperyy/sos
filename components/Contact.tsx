@@ -61,7 +61,7 @@ const Contact: React.FC = () => {
   return (
     <section id="contact" className="py-28 md:py-36 bg-paper">
       <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
-        <SectionHeader eyebrow="İletişim" title="İletişim" subtitle="Akrobasi tanıtım uçuşları, basın ve iş birlikleri için bize yazın." />
+        <SectionHeader title="İletişim" subtitle="Akrobasi tanıtım uçuşları, basın ve iş birlikleri için bize yazın." />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-14 lg:gap-20">
           {/* Bilgiler */}
@@ -86,10 +86,6 @@ const Contact: React.FC = () => {
               </a>
             </div>
 
-            {/* Eski siteden: S.H.M. yol tarifi haritası — tıklayınca tam boy açılır */}
-            <a href="/images/iletisim/shm-yol-haritasi.jpg" target="_blank" rel="noopener noreferrer" className="block mt-10 border border-ink/10" aria-label="S.H.M. yol tarifi haritasını tam boy aç">
-              <img src="/images/iletisim/shm-yol-haritasi.jpg" alt="Sivrihisar Havacılık Merkezi yol tarifi haritası" className="w-full h-auto block" loading="lazy" />
-            </a>
           </div>
 
           {/* Form */}
@@ -124,6 +120,18 @@ const Contact: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Eski siteden: S.H.M. yol tarifi haritası — sayfanın ortasında büyük; tıklayınca tam boy açılır */}
+        <a
+          href="/images/iletisim/shm-yol-haritasi.jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block mt-20 md:mt-28 max-w-5xl mx-auto border border-ink/10 shadow-xl"
+          aria-label="S.H.M. yol tarifi haritasını tam boy aç"
+          data-reveal
+        >
+          <img src="/images/iletisim/shm-yol-haritasi.jpg" alt="Sivrihisar Havacılık Merkezi yol tarifi haritası" className="w-full h-auto block" loading="lazy" />
+        </a>
       </div>
     </section>
   );

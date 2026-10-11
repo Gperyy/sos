@@ -7,7 +7,7 @@ import { useLightbox } from "./ui/Lightbox";
 // Adım metinleri eski siteden (seminozturk.com — Semin Öztürk ile uçmak ister misin) birebir alınmıştır.
 const steps = [
   { n: "01", title: "Randevu Al", text: "Pazartesi hariç her gün uçuş imkanı var. Uçmak istediğiniz tarih ve saati semin.ozturk@acromach.com mail adresine bildiriyorsunuz, ona göre planlama yapıyoruz." },
-  { n: "02", title: "Uç", text: "Akrobasi Tanıtım Uçuşları'nı S.H.M.'de yani Sivrihisar Havacılık Merkezi'nde yapıyoruz. (Ankara’ya yaklaşık 100 km mesafedeyiz)." },
+  { n: "02", title: "Uç", text: "Akrobasi Tanıtım Uçuşları'nı S.H.M.'de yani Sivrihisar Havacılık Merkezi'nde yapıyoruz. (Ankara’ya yaklaşık 100 km mesafedeyiz)." },
   { n: "03", title: "Anını Al", text: "Uçuşlar 12 / 15 dakika kadar oluyor ve bir kamera ile ses / görüntü olarak kaydediliyor. Uçuştan sonra kayıt USB formatında size veriliyor ve yanında Akrobasi Sertifikası takdim ediliyor." },
 ];
 
@@ -82,7 +82,7 @@ const FlyWithSemin: React.FC = () => {
 
       {/* Sabitlenen ifade: ekran durur, satırlar zıt yönlere akar, kırmızı şeritler süpürür */}
       <ScrollStatement
-        video="/videos/hero.mp4"
+        video="/videos/tanitim-ucusu.mp4"
         lines={["Birlikte dünyayı", "ters düz edelim"]}
         mobileLines={["Birlikte", "dünyayı", "ters düz", "edelim"]}
       />

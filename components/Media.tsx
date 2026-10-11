@@ -200,7 +200,7 @@ const Media: React.FC = () => {
           <span className="text-[#E02F3C] text-xs font-black italic tracking-[0.3em] uppercase">Reklam Filmleri</span>
           <span className="flex-1 h-px bg-white/10"></span>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-20">
           {adVideos.map((v, i) => (
             <VideoCard key={v.file} video={v} aspect="aspect-video" delay={(i % 3) + 1} small />
           ))}

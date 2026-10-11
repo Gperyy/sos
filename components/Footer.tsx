@@ -1,5 +1,5 @@
 import React from "react";
-import { Facebook, Instagram, Twitter, ArrowRight } from "lucide-react";
+import { Facebook, Instagram, ArrowRight } from "lucide-react";
 import { useNav } from "./ui";
 
 // Sponsorlar — logolar ve bağlantılar eski siteden (seminozturk.com) alınmıştır, aynı sırayla.
@@ -67,7 +67,7 @@ const Footer: React.FC = () => {
                 <button
                   type="button"
                   onClick={goFly}
-                  className="group/cta relative overflow-hidden bg-white text-[#E02F3C] px-12 py-5 font-black uppercase italic tracking-wide text-lg shadow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)] focus-visible:-translate-y-1 active:translate-y-0 active:shadow-lg"
+                  className="group/cta relative overflow-hidden whitespace-nowrap bg-white text-[#E02F3C] px-7 sm:px-12 py-5 font-black uppercase italic tracking-wide text-base sm:text-lg shadow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)] focus-visible:-translate-y-1 active:translate-y-0 active:shadow-lg"
                 >
                   <span
                     aria-hidden="true"
@@ -81,7 +81,9 @@ const Footer: React.FC = () => {
                   </span>
                 </button>
                 <p className="text-white/60 text-sm mt-6 font-medium">
-                  Akrobasi tanıtım uçuşları Sivrihisar Havacılık Merkezi'nde gerçekleştirilmektedir.
+                  {/* Mobilde: 1) Akrobasi tanıtım uçuşları 2) Sivrihisar Havacılık Merkezi'nde 3) gerçekleştirilmektedir. */}
+                  Akrobasi tanıtım uçuşları<br className="md:hidden" /> <span className="whitespace-nowrap">Sivrihisar Havacılık Merkezi'nde</span>
+                  <br className="md:hidden" /> gerçekleştirilmektedir.
                 </p>
               </div>
             </div>
@@ -93,11 +95,8 @@ const Footer: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between items-center gap-10">
               <div className="flex flex-col items-center md:items-start gap-4">
                 <div className="flex items-center gap-3 text-white">
-                  <div className="size-8 text-[#FF542E] animate-pulse">
-                    <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z"></path>
-                    </svg>
-                  </div>
+                  {/* Header'daki uçak figürü */}
+                  <img src="/images/logo/semin-ucak.svg" alt="" aria-hidden="true" className="h-10 w-auto" />
                   <span className="font-black italic text-2xl tracking-tighter uppercase text-white">
                     SEMİN ÖZTÜRK ŞENER
                   </span>
@@ -105,14 +104,11 @@ const Footer: React.FC = () => {
                 <p className="text-gray-500 text-sm font-medium">© 2026 Tüm hakları saklıdır.</p>
               </div>
               <div className="flex gap-8">
-                <a href="https://www.facebook.com/Semin-Öztürk-Acromach-Airshows-1519078525081107/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF542E] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_#ff542e]" aria-label="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=100057655285696" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF542E] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_#ff542e]" aria-label="Facebook">
                   <Facebook className="w-6 h-6" />
                 </a>
                 <a href="https://www.instagram.com/semin.ozturk/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF542E] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_#ff542e]" aria-label="Instagram">
                   <Instagram className="w-6 h-6" />
-                </a>
-                <a href="https://twitter.com/semin_acromach" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF542E] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_#ff542e]" aria-label="Twitter">
-                  <Twitter className="w-6 h-6" />
                 </a>
               </div>
             </div>

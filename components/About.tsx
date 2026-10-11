@@ -113,7 +113,7 @@ const About: React.FC = () => {
   return (
     <section id="about" className="py-24 bg-background-light">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">
-        <SectionHeader eyebrow="Biyografi" title="Hakkında" />
+        <SectionHeader title="Hakkında" />
 
         <div className="flex flex-col gap-16 lg:gap-24 mt-4">
           {chapters.map((ch, i) => (

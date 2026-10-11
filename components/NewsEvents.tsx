@@ -64,9 +64,9 @@ const NewsEvents: React.FC = () => {
           <div className="w-2/3 max-w-[300px] md:w-full">
             {featured ? (
               <button onClick={scrollToEvents} className="group block w-full text-left" aria-label={`${featured.title} — takvimde gör`}>
-                <div data-reveal-img className="relative aspect-[3/4] overflow-hidden bg-ink/5">
+                <div data-reveal-img className={`relative overflow-hidden bg-ink/5 ${featured.poster ? "" : "aspect-[3/4]"}`}>
                   {featured.poster ? (
-                    <img src={featured.poster} alt={`${featured.title} afişi`} className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
+                    <img src={featured.poster} alt={`${featured.title} afişi`} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span className="text-ink/25 text-[11px] tracking-[0.35em] uppercase">Afiş</span>

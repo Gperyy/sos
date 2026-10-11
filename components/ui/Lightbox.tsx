@@ -15,7 +15,7 @@ const getLenis = () => (window as unknown as { __lenis?: LenisLike }).__lenis;
  *   <button onClick={() => open(i)}>…</button>  …  {lightbox}
  * Esc kapatır, ← → gezinir; açıkken sayfa kaydırması durur.
  */
-export function useLightbox(photos: LightboxPhoto[], { captions = true }: { captions?: boolean } = {}) {
+export function useLightbox(photos: LightboxPhoto[], { captions = false }: { captions?: boolean } = {}) {
   const [index, setIndex] = useState<number | null>(null);
   const close = useCallback(() => setIndex(null), []);
   const step = useCallback(

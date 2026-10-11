@@ -53,16 +53,17 @@ const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ photos, backdrop 
     if (barRef.current) barRef.current.style.transform = `scaleX(${p})`;
   });
 
+  // Mobilde fotoğraf ekran genişliğini aşmaz (en fazla 84vw), böylece kayarken tamamı görünür
   const items = photos.map((ph, i) => (
     <button
       key={ph.src}
       onClick={() => open(i)}
-      className={`group relative flex-shrink-0 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.5)] ${heights[i % heights.length]} ${
+      className={`group relative flex-shrink-0 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.5)] max-md:!h-auto ${heights[i % heights.length]} ${
         aligns[i % aligns.length]
       }`}
       aria-label={`${ph.alt} — büyüt`}
     >
-      <img src={ph.src} alt={ph.alt} loading="lazy" className="h-full w-auto max-w-none block transition-transform duration-[1200ms] group-hover:scale-105" />
+      <img src={ph.src} alt={ph.alt} loading="lazy" className="h-full w-auto max-w-none max-md:h-auto max-md:max-h-[58svh] max-md:max-w-[84vw] block transition-transform duration-[1200ms] group-hover:scale-105" />
     </button>
   ));
 
