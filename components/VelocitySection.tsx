@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
-import { SectionHeader } from "./ui";
-import { useScrollProgress, scrollToProgress, clamp01, prefersReducedMotion } from "./ui/useScrollProgress";
+import { useScrollProgress, scrollToProgress, clamp01 } from "./ui/useScrollProgress";
 
 interface CareerMoment {
   year: string;
@@ -151,27 +150,9 @@ const CareerFlight: React.FC = () => {
   );
 };
 
-/* Hareket azaltma tercihinde: sade, sabit liste */
-const CareerStatic: React.FC = () => (
-  <section className="bg-ink py-24">
-    <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
-      <SectionHeader light title="Kariyer Yolculuğu" />
-      <div className="grid gap-12 md:grid-cols-2">
-        {careerMoments.map((m) => (
-          <article key={m.year}>
-            <img src={m.thumbnail} alt={m.title} className="w-full aspect-[3/2] object-cover bg-[#18181b]" loading="lazy" onError={hideBroken} />
-            <span className="block font-black italic text-[#E02F3C] text-4xl mt-5">{m.year}</span>
-            <h3 className="font-black italic uppercase text-white text-xl mt-2">{m.title}</h3>
-            <p className="text-white/60 mt-2">{m.description}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-);
-
+// Sahne tamamen kullanıcının kaydırmasıyla ilerler (kendiliğinden oynamaz); bu yüzden
+// "hareketi azalt" açık telefonlarda da animasyonlu sahne gösterilir.
 const VelocitySection: React.FC = () => {
-  if (prefersReducedMotion()) return <CareerStatic />;
   return (
     <div id="performance-video">
       <div className="bg-ink pt-16 md:pt-20">

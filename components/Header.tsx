@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Facebook, Instagram } from "lucide-react";
 import type { TabType } from "./ui";
 type Language = "tr" | "en";
 
@@ -16,15 +16,24 @@ const navItemsData: { tr: string; en: string; tab: TabType }[] = [
   { tr: "Semin ile Uç", en: "Fly with Semin", tab: "fly" },
 ];
 
+// Mobil menü perdesi: eğik kenar sağdan sola süpürür; kapalıyken tamamen ekran dışında
+const MENU_OPEN = "polygon(0% 0%, 160% 0%, 130% 100%, -30% 100%)";
+const MENU_CLOSED = "polygon(130% 0%, 160% 0%, 130% 100%, 100% 100%)";
+
 // Header — MAYIS (orijinal) hali, Lexend.
 const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>("tr");
 
   useEffect(() => {
+    // Not: lenis.stop() kullanılmaz — html'e overflow:hidden verip yapışkan header'ı bozuyor.
+    // Menü paneli data-lenis-prevent ile kendi içinde kaydırılır.
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileMenuOpen(false);
+    window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
     };
   }, [mobileMenuOpen]);
 
@@ -42,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-md border-b border-gray-100 font-['Lexend']">
-      <div className="flex h-full grow flex-col max-w-[1280px] mx-auto px-4 sm:px-8">
+      <div className="relative z-50 bg-white flex h-full grow flex-col max-w-[1280px] mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20">
           <button
             type="button"
@@ -91,69 +100,93 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
             </button>
           </nav>
 
+          {/* Hamburger: eğik çizgiler açılınca X'e dönüşür */}
           <button
-            className="lg:hidden text-[#181210] p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E02F3C]"
+            className="lg:hidden relative w-11 h-11 -mr-1 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E02F3C]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+            <span className="relative block w-7 h-5 skew-x-[-12deg]" aria-hidden="true">
+              <span className={`absolute right-0 h-[3px] bg-[#181210] transition-all duration-500 ease-[cubic-bezier(0.77,0,0.18,1)] ${mobileMenuOpen ? "top-1/2 -translate-y-1/2 w-full rotate-45 !bg-[#E02F3C]" : "top-0 w-full"}`}></span>
+              <span className={`absolute right-0 top-1/2 -translate-y-1/2 h-[3px] bg-[#E02F3C] transition-all duration-300 ${mobileMenuOpen ? "w-0 opacity-0" : "w-2/3"}`}></span>
+              <span className={`absolute right-0 h-[3px] bg-[#181210] transition-all duration-500 ease-[cubic-bezier(0.77,0,0.18,1)] ${mobileMenuOpen ? "top-1/2 -translate-y-1/2 w-full -rotate-45 !bg-[#E02F3C]" : "bottom-0 w-5/6"}`}></span>
+            </span>
           </button>
         </div>
       </div>
 
-      {/* Mobil çekmece */}
+      {/* Mobil menü: önce kırmızı, ardından açık zeminli eğik perde süpürür; başlıklar sırayla kayarak gelir */}
       <div
-        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-x-0 top-20 bottom-0 z-40 lg:hidden ${mobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+        aria-hidden={!mobileMenuOpen}
       >
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+        <div
+          className="absolute inset-0 bg-[#E02F3C] transition-[clip-path] duration-500 ease-[cubic-bezier(0.77,0,0.18,1)]"
+          style={{ clipPath: mobileMenuOpen ? MENU_OPEN : MENU_CLOSED }}
+        ></div>
         <nav
-          className={`absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl transform transition-transform duration-300 ease-out ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          data-lenis-prevent
+          className={`absolute inset-0 bg-background-light text-[#181210] flex flex-col overflow-y-auto transition-[clip-path] duration-500 ease-[cubic-bezier(0.77,0,0.18,1)] ${mobileMenuOpen ? "delay-100" : ""}`}
+          style={{ clipPath: mobileMenuOpen ? MENU_OPEN : MENU_CLOSED }}
         >
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <div className="flex items-center gap-4">
-                <span className="text-lg font-black italic uppercase text-[#181210]">
-                  {language === "tr" ? "Menü" : "Menu"}
-                </span>
-                <button
-                  onClick={toggleLanguage}
-                  className="text-sm font-black uppercase tracking-wide text-[#181210] hover:text-[#E02F3C] transition-colors border border-gray-200 px-2 py-1 rounded"
-                >
-                  {language === "tr" ? "EN" : "TR"}
-                </button>
-              </div>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-[#181210] hover:text-[#E02F3C] transition-colors" aria-label="Menüyü kapat">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+          {/* Arkada dev, soluk uçak figürü */}
+          <img
+            src="/images/logo/semin-ucak.svg"
+            alt=""
+            aria-hidden="true"
+            className={`absolute -right-16 bottom-24 w-72 opacity-[0.08] pointer-events-none transition-transform duration-[1200ms] ease-out ${mobileMenuOpen ? "translate-x-0 -rotate-12" : "translate-x-24 rotate-0"}`}
+          />
 
-            <div className="flex-1 overflow-y-auto py-6">
-              {navItems.map((item) => (
+          <div className="relative flex-1 flex flex-col justify-center px-7 py-10 gap-1">
+            {navItems.map((item, i) => {
+              const active = activeTab === item.tab;
+              return (
                 <button
                   key={item.tab}
                   onClick={() => handleNavClick(item.tab)}
-                  className={`w-full text-left px-6 py-4 text-lg font-bold italic uppercase tracking-wide transition-all border-l-4 ${
-                    activeTab === item.tab
-                      ? "text-[#E02F3C] bg-[#E02F3C]/5 border-[#E02F3C]"
-                      : "text-[#181210] hover:text-[#E02F3C] hover:bg-gray-50 border-transparent"
+                  tabIndex={mobileMenuOpen ? 0 : -1}
+                  style={{ transitionDelay: mobileMenuOpen ? `${220 + i * 60}ms` : "0ms" }}
+                  className={`group flex items-center gap-4 py-3 text-left transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    mobileMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"
                   }`}
                 >
-                  {item.name}
+                  <span className={`h-7 w-1.5 bg-[#E02F3C] skew-x-[-15deg] transition-all duration-300 ${active ? "opacity-100" : "opacity-0 -ml-5 group-hover:opacity-100 group-hover:ml-0"}`}></span>
+                  <span className={`text-[2rem] leading-tight font-black italic uppercase tracking-tight transition-colors ${active ? "text-[#E02F3C]" : "text-[#181210] group-hover:text-[#E02F3C]"}`}>
+                    {item.name}
+                  </span>
                 </button>
-              ))}
-            </div>
+              );
+            })}
+          </div>
 
-            <div className="p-6 border-t border-gray-100">
+          <div
+            style={{ transitionDelay: mobileMenuOpen ? `${220 + navItems.length * 60}ms` : "0ms" }}
+            className={`relative px-7 pb-8 flex flex-col gap-6 transition-all duration-500 ${mobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+          >
+            <button
+              onClick={() => handleNavClick("contact")}
+              tabIndex={mobileMenuOpen ? 0 : -1}
+              className="group w-full flex items-center justify-between bg-[#E02F3C] text-white px-6 py-4 font-black italic text-lg uppercase tracking-wider skew-x-[-8deg] shadow-[0_0_25px_rgba(224,47,60,0.45)]"
+            >
+              <span className="skew-x-[8deg]">{language === "tr" ? "İletişim" : "Contact"}</span>
+              <ArrowRight className="w-5 h-5 skew-x-[8deg] transition-transform group-hover:translate-x-1" />
+            </button>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-5 text-[#181210]/55">
+                <a href="https://www.facebook.com/profile.php?id=100057655285696" target="_blank" rel="noopener noreferrer" tabIndex={mobileMenuOpen ? 0 : -1} className="hover:text-[#E02F3C] transition-colors" aria-label="Facebook">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="https://www.instagram.com/semin.ozturk/" target="_blank" rel="noopener noreferrer" tabIndex={mobileMenuOpen ? 0 : -1} className="hover:text-[#E02F3C] transition-colors" aria-label="Instagram">
+                  <Instagram className="w-5 h-5" />
+                </a>
+              </div>
               <button
-                onClick={() => handleNavClick("contact")}
-                className="w-full bg-[#E02F3C] hover:bg-[#FF4D5A] text-white px-6 py-4 font-black italic text-lg uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(224,47,60,0.4)]"
+                onClick={toggleLanguage}
+                tabIndex={mobileMenuOpen ? 0 : -1}
+                className="text-sm font-black uppercase tracking-wide text-[#181210] hover:text-[#E02F3C] border border-[#181210]/15 px-3 py-1.5 transition-colors"
               >
-                {language === "tr" ? "İletişim" : "Contact"}
+                {language === "tr" ? "EN" : "TR"}
               </button>
             </div>
           </div>

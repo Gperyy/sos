@@ -2,60 +2,88 @@ import React from "react";
 import { Facebook, Instagram, ArrowRight } from "lucide-react";
 import { useNav } from "./ui";
 
-// Sponsorlar — logolar ve bağlantılar eski siteden (seminozturk.com) alınmıştır, aynı sırayla.
-// Logo dosyaları: /public/images/sponsorlar
-const sponsors: { name: string; logo?: string; url?: string }[] = [
-  { name: "MSO Hava ve Uzay Müzesi", logo: "/images/sponsorlar/mso-muze.png", url: "http://msomuseum.com/" },
-  { name: "Airflow Performance", logo: "/images/sponsorlar/airflow-performance.jpg", url: "https://airflowperformance.com/" },
-  { name: "Sivrihisar Havacılık Merkezi", logo: "/images/sponsorlar/shm.png", url: "http://shm.aero/" },
-  { name: "Barry Mounts", logo: "/images/sponsorlar/barry-mounts.jpg" },
-  { name: "Lycoming", logo: "/images/sponsorlar/lycoming.png", url: "https://www.lycoming.com/" },
-  { name: "Mach Aviation", logo: "/images/sponsorlar/mach-aviation.png", url: "http://www.mach.aero/" },
-  { name: "Acromach Sky Dancer", logo: "/images/sponsorlar/sky-dancer-acromach.png", url: "http://acromach.com/" },
-  { name: "MSO Müze Dükkanı", logo: "/images/sponsorlar/mso-dukkan.png", url: "http://shop.msomuseum.com/" },
-  { name: "BŞK Tarım Ürünleri", logo: "/images/sponsorlar/bsk.png" },
-  { name: "Lycon", logo: "/images/sponsorlar/lycon.webp", url: "https://lycon.com/" },
-  { name: "Dynon Avionics", logo: "/images/sponsorlar/dynon.png", url: "https://dynonavionics.com/" },
-  { name: "Ofis Tekin", logo: "/images/sponsorlar/ofis-tekin.png", url: "https://www.ofistekin.com/" },
-  { name: "Goodyear", logo: "/images/sponsorlar/goodyear.png", url: "https://www.goodyear.eu/tr_tr/consumer.html" },
-  { name: "Trig Avionics", logo: "/images/sponsorlar/trig.png", url: "https://trig-avionics.com/" },
-  { name: "Hooker Harness", logo: "/images/sponsorlar/hooker-harness.jpg", url: "https://www.hookerharness.com/" },
+// Sponsorlar — logolar ve bağlantılar eski siteden (seminozturk.com) alınmıştır.
+// Logo dosyaları: /public/images/sponsorlar — arka planları temizlenmiş (saydam PNG/SVG), kırpılmış.
+// Üç sıra: ilk sıra büyük ana destekçiler, diğer iki sıra küçük. h = masaüstündeki logo yüksekliği (px);
+// logoların biçimi farklı olduğundan (arma, yazı, dikey) her biri gözle eşit ağırlıkta görünecek şekilde ayarlı.
+type Sponsor = { name: string; logo: string; url?: string; h: number };
+const sponsorRows: Sponsor[][] = [
+  [
+    { name: "MSO Hava ve Uzay Müzesi", logo: "/images/sponsorlar/mso-muze.png", url: "http://msomuseum.com/", h: 160 },
+    { name: "Sivrihisar Havacılık Merkezi", logo: "/images/sponsorlar/shm.png", url: "http://shm.aero/", h: 120 },
+    { name: "Mach Aviation", logo: "/images/sponsorlar/mach-aviation.png", url: "http://www.mach.aero/", h: 84 },
+    { name: "Acromach Sky Dancer", logo: "/images/sponsorlar/sky-dancer-acromach.png", url: "http://acromach.com/", h: 124 },
+    { name: "MSO Müze Dükkanı", logo: "/images/sponsorlar/mso-dukkan.png", url: "http://shop.msomuseum.com/", h: 56 },
+  ],
+  [
+    { name: "Airflow Performance", logo: "/images/sponsorlar/airflow-performance.png", url: "https://airflowperformance.com/", h: 46 },
+    { name: "Barry Controls", logo: "/images/sponsorlar/barry-controls.png", h: 48 },
+    { name: "BŞK Tarım Ürünleri", logo: "/images/sponsorlar/bsk.png", h: 33 },
+    { name: "Dynon Avionics", logo: "/images/sponsorlar/dynon.png", url: "https://dynonavionics.com/", h: 50 },
+    { name: "Goodyear", logo: "/images/sponsorlar/goodyear.png", url: "https://www.goodyear.eu/tr_tr/consumer.html", h: 32 },
+    { name: "Hooker Harness", logo: "/images/sponsorlar/hooker-harness.png", url: "https://www.hookerharness.com/", h: 38 },
+  ],
+  [
+    { name: "Lycoming", logo: "/images/sponsorlar/lycoming.png", url: "https://www.lycoming.com/", h: 26 },
+    { name: "Lycon", logo: "/images/sponsorlar/lycon.png", url: "https://lycon.com/", h: 62 },
+    { name: "Ofis Tekin", logo: "/images/sponsorlar/ofis-tekin.svg", url: "https://www.ofistekin.com/", h: 36 },
+    { name: "Trig Avionics", logo: "/images/sponsorlar/trig.png", url: "https://trig-avionics.com/", h: 56 },
+  ],
 ];
 
-const Footer: React.FC = () => {
+// Mobilde logolar %60 boyutta; yükseklik CSS değişkeniyle (--h) verilir.
+// Logolar her zaman krem zeminde ve kendi renklerinde gösterilir.
+const SponsorLogo: React.FC<{ s: Sponsor }> = ({ s }) => {
+  const img = (
+    <img
+      src={s.logo}
+      alt={s.name}
+      loading="lazy"
+      style={{ ["--h" as string]: `${s.h}px` }}
+      className="block w-auto max-w-full h-[calc(var(--h)*0.6)] md:h-[var(--h)] object-contain transition-transform duration-500 hover:scale-105"
+    />
+  );
+  return s.url ? (
+    <a href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center">
+      {img}
+    </a>
+  ) : (
+    <div className="flex items-center justify-center">{img}</div>
+  );
+};
+
+const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = false, showSponsors = false }) => {
   const go = useNav();
   const goFly = () => go("fly");
 
   return (
     <>
-      {/* Destekçilerimiz — ŞU ANKİ hali */}
-      <section id="sponsors" className="bg-paper py-20 border-t border-ink/10 scroll-mt-24">
-        <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
-          <div className="flex items-center gap-3 mb-10">
-            <span className="text-ink/45 text-[11px] tracking-[0.35em] uppercase">Destekçilerimiz</span>
-            <span className="flex-1 h-px bg-ink/10"></span>
+      {/* Destekçiler — başlıksız logo alanı; yalnızca ana sayfada */}
+      {showSponsors && (
+        <section id="sponsors" aria-label="Destekçiler" className="bg-paper border-t border-ink/10 py-16 md:py-20 scroll-mt-24">
+          <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
+            <div className="flex flex-col gap-10 md:gap-12">
+              {sponsorRows.map((row, ri) => (
+                <div
+                  key={ri}
+                  className={`flex flex-wrap items-center gap-x-10 gap-y-8 ${
+                    ri === 2 ? "justify-center md:gap-x-[9%]" : "justify-center md:justify-around"
+                  }`}
+                >
+                  {row.map((s) => (
+                    <SponsorLogo key={s.name} s={s} />
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-8 items-center">
-            {sponsors.map((s, i) => {
-              const inner = s.logo ? (
-                <img src={s.logo} alt={s.name} className="max-h-10 max-w-[70%] object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-500" loading="lazy" />
-              ) : (
-                <span className="text-ink/30 text-[11px] tracking-[0.2em] uppercase hover:text-ink/60 transition-colors">{s.name}</span>
-              );
-              return s.url ? (
-                <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center h-16">{inner}</a>
-              ) : (
-                <div key={i} className="flex items-center justify-center h-16">{inner}</div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* CTA + Footer — MAYIS (orijinal) hali, Lexend */}
       <div className="font-['Lexend']">
-        <section className="bg-white py-24 border-t border-gray-100 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(224,47,60,0.03)_50%,transparent_75%)] bg-[length:20px_20px]"></div>
+        {/* Zemin sayfaya uyar (krem ya da koyu) — üstteki logo alanıyla kesintisiz */}
+        <section className={`${dark ? "bg-surface-dark" : "bg-paper"} pt-4 pb-24 md:pb-28 relative overflow-hidden`}>
           <div className="max-w-[1280px] mx-auto px-4 sm:px-8 relative z-10" data-reveal>
             <div className="bg-[#E02F3C] rounded-none transform -skew-x-2 p-10 md:p-20 text-center relative overflow-hidden shadow-xl group">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-80"></div>

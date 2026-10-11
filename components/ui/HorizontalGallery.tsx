@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useScrollProgress, prefersReducedMotion } from "./useScrollProgress";
+import { useScrollProgress } from "./useScrollProgress";
 import { useLightbox } from "./Lightbox";
 import type { LightboxPhoto } from "./Lightbox";
 
@@ -66,16 +66,6 @@ const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ photos, backdrop 
       <img src={ph.src} alt={ph.alt} loading="lazy" className="h-full w-auto max-w-none max-md:h-auto max-md:max-h-[58svh] max-md:max-w-[84vw] block transition-transform duration-[1200ms] group-hover:scale-105" />
     </button>
   ));
-
-  // Hareket azaltma: sabitleme yok, elle yatay kaydırılan şerit
-  if (prefersReducedMotion()) {
-    return (
-      <div className="overflow-x-auto py-10">
-        <div className="flex gap-6 px-6 sm:px-9 h-[50svh] items-stretch">{items}</div>
-        {lightbox}
-      </div>
-    );
-  }
 
   return (
     <section ref={ref} className="relative" style={{ height }}>

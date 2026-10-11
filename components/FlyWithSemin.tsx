@@ -2,6 +2,7 @@ import React from "react";
 import { Mail } from "lucide-react";
 import ScrollStatement from "./ui/ScrollStatement";
 import { useLightbox } from "./ui/Lightbox";
+import { useNav } from "./ui";
 
 // Semin ile Uç — ŞU ANKİ düzen + MAYIS font (Lexend) & renk.
 // Adım metinleri eski siteden (seminozturk.com — Semin Öztürk ile uçmak ister misin) birebir alınmıştır.
@@ -26,6 +27,7 @@ const flyPhotos = [
 
 const FlyWithSemin: React.FC = () => {
   const { open, lightbox } = useLightbox(flyPhotos);
+  const go = useNav();
   return (
     <>
       <section id="fly" className="py-24 bg-background-light font-['Lexend']">
@@ -109,14 +111,15 @@ const FlyWithSemin: React.FC = () => {
                   <h3 className="text-2xl font-black italic uppercase text-white leading-tight mb-3">
                     Birlikte Dünyayı Ters Düz Edelim
                   </h3>
-                  <p className="text-white/80 font-medium leading-relaxed">Tarihinizi iletin, gerisini biz planlayalım.</p>
                 </div>
-                <a
-                  href="mailto:semin.ozturk@acromach.com"
+                {/* İletişim sayfasına götürür */}
+                <button
+                  type="button"
+                  onClick={() => go("contact")}
                   className="relative z-10 mt-8 inline-flex items-center justify-center gap-2 bg-white text-[#E02F3C] px-6 py-4 font-black italic uppercase tracking-wider hover:bg-gray-100 transition-colors"
                 >
                   <Mail className="w-5 h-5" /> Randevu Talep Et
-                </a>
+                </button>
               </div>
             </div>
           </div>

@@ -86,6 +86,7 @@ export const events: EventData[] = [
     location: "Sivrihisar Hava Gösterileri",
     description: "Türkiye'nin en büyük hava gösterisi organizasyonu. Binlerce seyirci, düzinelerce pilot ve unutulmaz bir sahne.",
     website: "https://shgairshow.com",
+    poster: "/images/afisler/2026-09-19-shg-airshow.jpg",
   },
   {
     id: "cumhuriyet-fotografi-2026",

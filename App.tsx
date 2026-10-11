@@ -15,17 +15,126 @@ import Contact from "./components/Contact";
 import { NavContext } from "./components/ui";
 import type { TabType } from "./components/ui";
 
-const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("home");
+// Her sekmenin kendi adresi: yenileyince aynı sayfa açılır, geri/ileri tuşları sekmeler arasında çalışır.
+const PATHS: Record<TabType, string> = {
+  home: "/",
+  about: "/hakkinda",
+  aircraft: "/semin-in-ucagi",
+  events: "/etkinlik-takvimi",
+  media: "/medya",
+  fly: "/semin-ile-uc",
+  contact: "/iletisim",
+};
+const TITLES: Record<TabType, string> = {
+  home: "",
+  about: "Hakkında",
+  aircraft: "Semin'in Uçağı",
+  events: "Etkinlik Takvimi",
+  media: "Medya",
+  fly: "Semin ile Uç",
+  contact: "İletişim",
+};
+const BASE_TITLE = "Semin Öztürk Şener";
+const tabFromPath = (path: string): TabType => {
+  const clean = path.replace(/\/+$/, "") || "/";
+  const hit = (Object.keys(PATHS) as TabType[]).find((t) => PATHS[t] === clean);
+  return hit ?? "home";
+};
 
-  // Sekme değiştir + yeni sayfanın başına anında dön
+type LenisLike = { scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
+const scrollToY = (y: number) => {
+  const lenis = (window as unknown as { __lenis?: LenisLike }).__lenis;
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+  else window.scrollTo({ top: y });
+};
+
+// Kaydırma konumunu geri yükle: sayfa (görseller yüklendikçe) yeterince uzayana kadar en fazla ~2 sn dener.
+// rAF yerine zamanlayıcı: arka plandaki sekmede de çalışır.
+const restoreScroll = (y: number) => {
+  const start = performance.now();
+  const tick = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (!y || max >= y || performance.now() - start > 2000) {
+      scrollToY(Math.max(0, Math.min(y, max)));
+      return;
+    }
+    window.setTimeout(tick, 50);
+  };
+  window.setTimeout(tick, 0);
+};
+
+type HistState = { tab?: TabType; key?: string };
+const newKey = () => Math.random().toString(36).slice(2, 10);
+const readY = (key?: string) => {
+  if (!key) return 0;
+  try {
+    return Number(sessionStorage.getItem(`scroll:${key}`)) || 0;
+  } catch {
+    return 0;
+  }
+};
+const writeY = (key: string | undefined, y: number) => {
+  if (!key) return;
+  try {
+    sessionStorage.setItem(`scroll:${key}`, String(Math.round(y)));
+  } catch {
+    /* gizli sekme vb. — konum kaydedilemezse sorun değil */
+  }
+};
+
+const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<TabType>(() => tabFromPath(window.location.pathname));
+
+  // Kaydırmayı tarayıcı yerine biz geri yükleriz (Lenis ve sonradan yüklenen görseller yüzünden).
+  // Her geçmiş kaydının bir anahtarı var; konumu kaydırdıkça sessionStorage'a yazılır (yenilemede kalır).
+  useEffect(() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    const st = history.state as HistState | null;
+    const key = st?.key ?? newKey();
+    if (!st?.key) history.replaceState({ tab: activeTab, key }, "");
+    restoreScroll(readY(key));
+
+    let t: number | undefined;
+    const onScroll = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => writeY((history.state as HistState | null)?.key, window.scrollY), 150);
+    };
+    const onPop = (e: PopStateEvent) => {
+      const s2 = e.state as HistState | null;
+      setActiveTab(s2?.tab ?? tabFromPath(window.location.pathname));
+      restoreScroll(readY(s2?.key));
+    };
+    // Yenileme / sayfadan çıkış: son konumu hemen yaz
+    const saveNow = () => writeY((history.state as HistState | null)?.key, window.scrollY);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("popstate", onPop);
+    window.addEventListener("pagehide", saveNow);
+    window.addEventListener("beforeunload", saveNow);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("pagehide", saveNow);
+      window.removeEventListener("beforeunload", saveNow);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Sekme başlığı
+  useEffect(() => {
+    document.title = TITLES[activeTab] ? `${TITLES[activeTab]} | ${BASE_TITLE}` : `${BASE_TITLE} - Profesyonel Akrobasi Pilotu`;
+  }, [activeTab]);
+
+  // Sekme değiştir: adres çubuğuna yaz (geçmişe ekle) + yeni sayfanın başına anında dön
   const navigate = useCallback((tab: TabType) => {
+    const current = tabFromPath(window.location.pathname);
+    if (tab !== current) {
+      // Ayrılırken bulunduğumuz konumu kaydet: geri dönünce aynı yerden devam
+      writeY((history.state as HistState | null)?.key, window.scrollY);
+      history.pushState({ tab, key: newKey() }, "", PATHS[tab]);
+    }
     setActiveTab(tab);
-    requestAnimationFrame(() => {
-      const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
-      if (lenis) lenis.scrollTo(0, { immediate: true });
-      else window.scrollTo({ top: 0 });
-    });
+    requestAnimationFrame(() => scrollToY(0));
   }, []);
 
   // Leclerc tarzı akıcı/ataletli kaydırma (reduced-motion'da devre dışı)
@@ -176,7 +285,8 @@ const App: React.FC = () => {
         <main className="flex-grow">
           {renderContent()}
         </main>
-        <Footer />
+        {/* Sponsorlar yalnızca ana sayfada. Koyu biten sayfalarda kapanış bloğu da koyu: ani geçiş olmasın */}
+        <Footer dark={activeTab === "aircraft" || activeTab === "media"} showSponsors={activeTab === "home"} />
       </div>
     </NavContext.Provider>
   );

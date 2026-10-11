@@ -4,18 +4,34 @@ import { Instagram, ArrowUpRight } from "lucide-react";
 const IG_URL = "https://www.instagram.com/semin.ozturk/";
 const IG_HANDLE = "@semin.ozturk";
 
-// Instagram'daki son fotoğraf gönderileri (@semin.ozturk). Fotoğraflar: /public/images/instagram/<kod>.jpg
+// Instagram'daki seçili fotoğraf gönderileri (@semin.ozturk). Fotoğraflar: /public/images/instagram/<kod>.jpg
 // Karelere tıklayınca gönderi Instagram'da açılır. Güncellemek için: fotoğrafı klasöre koyup listeye ekleyin
-// (aspect = genişlik / yükseklik). Satırlar 3'lü; satırdaki fotoğraflar aynı yükseklikte, kırpılmadan dizilir.
+// (aspect = genişlik / yükseklik). Az ama büyük: masaüstünde 2×2, mobilde kaydırılan tek sıra; kırpma yok.
 const posts: { code: string; alt: string; aspect: number }[] = [
   { code: "DXmEkpMDEJG", alt: "Dünya Pilotlar Günümüz Kutlu Olsun", aspect: 1461 / 1066 },
   { code: "DVQRpfrjB-j", alt: "Dynon Avionics 2026 yılında Yeni Menekşe ile gökyüzünde", aspect: 980 / 1226 },
-  { code: "DPq-TS_jJsi", alt: "Gökyüzünde dumandan kalp", aspect: 1255 / 952 },
   { code: "DOqpejdjK06", alt: "Kokpitten pist görünümü", aspect: 952 / 1269 },
-  { code: "DLSA6S8sVCE", alt: "Vecihi XIV & Maysa & Pars", aspect: 1008 / 1200 },
-  { code: "DG-VqyWMCIg", alt: "En güzel pazarımız", aspect: 1 },
+  { code: "DPq-TS_jJsi", alt: "Gökyüzünde dumandan kalp", aspect: 1255 / 952 },
 ];
-const rows = [posts.slice(0, 3), posts.slice(3, 6)];
+const rows = [posts.slice(0, 2), posts.slice(2, 4)];
+
+const PostLink: React.FC<{ p: (typeof posts)[number]; className?: string; style?: React.CSSProperties; delay?: number }> = ({ p, className = "", style, delay }) => (
+  <a
+    href={`https://www.instagram.com/p/${p.code}/`}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-reveal-img
+    data-reveal-delay={delay ? String(delay) : undefined}
+    style={style}
+    className={`group relative block overflow-hidden bg-ink/5 ${className}`}
+    aria-label={`${p.alt} — Instagram'da gör`}
+  >
+    <img src={`/images/instagram/${p.code}.jpg`} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
+    <div className="absolute inset-0 flex items-center justify-center bg-ink/0 group-hover:bg-ink/40 transition-colors">
+      <Instagram className="w-8 h-8 text-paper opacity-0 group-hover:opacity-100 transition-opacity" />
+    </div>
+  </a>
+);
 
 const Gallery: React.FC = () => {
   return (
@@ -37,28 +53,26 @@ const Gallery: React.FC = () => {
           </a>
         </div>
 
-        <div className="flex flex-col gap-3 md:gap-4">
+        {/* Masaüstü: 2×2, her satırdaki iki fotoğraf aynı yükseklikte, kırpılmadan */}
+        <div className="hidden md:flex flex-col gap-5">
           {rows.map((row, ri) => (
-            <div key={ri} className="flex gap-2 md:gap-4 items-start">
+            <div key={ri} className="flex gap-5 items-start">
               {row.map((p, i) => (
-                <a
-                  key={p.code}
-                  href={`https://www.instagram.com/p/${p.code}/`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-reveal-img
-                  data-reveal-delay={String(i + 1)}
-                  style={{ flex: `${p.aspect} 1 0%` }}
-                  className="group relative block overflow-hidden bg-ink/5"
-                  aria-label={`${p.alt} — Instagram'da gör`}
-                >
-                  <img src={`/images/instagram/${p.code}.jpg`} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-ink/0 group-hover:bg-ink/40 transition-colors">
-                    <Instagram className="w-7 h-7 text-paper opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-                </a>
+                <PostLink key={p.code} p={p} delay={i + 1} style={{ flex: `${p.aspect} 1 0%` }} />
               ))}
             </div>
+          ))}
+        </div>
+
+        {/* Mobil: parmakla kaydırılan tek sıra; yandaki fotoğrafın ucu görünür */}
+        <div className="md:hidden -mx-6 px-6 flex gap-4 items-center overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {posts.map((p) => (
+            <PostLink
+              key={p.code}
+              p={p}
+              className="flex-shrink-0 snap-center"
+              style={{ width: `min(84vw, ${Math.round(400 * p.aspect)}px)` }}
+            />
           ))}
         </div>
 
