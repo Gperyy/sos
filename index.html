@@ -166,6 +166,9 @@
           transition: none !important;
         }
       }
+      /* Kariyer sahnesi (mobil): kenar boşluğu metinle aynı; fotoğraf kısa ekranlarda küçülür */
+      .career-stage { --pad: 24px; --top: max(12svh, 96px); --pw: min(calc(100vw - 2 * var(--pad)), 42svh); }
+      @media (min-width: 640px) { .career-stage { --pad: 36px; } }
       /* Kariyer sahnesi: dönüm noktası metni vuruşla girer */
       @keyframes slamIn {
         0% { opacity: 0; transform: translateX(-60px) skewX(-12deg); }

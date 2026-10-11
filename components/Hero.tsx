@@ -50,16 +50,17 @@ const Hero: React.FC = () => {
             <button
               type="button"
               onClick={() => go("fly")}
-              className="group relative flex items-center justify-center gap-3 bg-[#E02F3C] hover:bg-[#FF4D5A] text-white px-6 sm:px-10 py-5 font-black text-base sm:text-lg italic uppercase tracking-wider transition-all transform hover:-translate-y-1 shadow-[0_0_30px_rgba(224,47,60,0.6)] skew-x-[-10deg] overflow-hidden"
+              className="group relative flex items-center justify-center gap-2 sm:gap-3 bg-[#E02F3C] hover:bg-[#FF4D5A] text-white px-4 sm:px-10 py-5 font-black text-[13px] min-[380px]:text-sm sm:text-lg italic uppercase tracking-wide sm:tracking-wider transition-all transform hover:-translate-y-1 shadow-[0_0_30px_rgba(224,47,60,0.6)] skew-x-[-10deg] overflow-hidden"
             >
               <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
-              <PlayCircle className="skew-x-[10deg]" />
-              <span className="skew-x-[10deg]">Semin'le Dünyayı Ters Düz Edin</span>
+              <PlayCircle className="skew-x-[10deg] flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
+              {/* Tek satır, ortalı (mobilde yazı küçülür) */}
+              <span className="skew-x-[10deg] whitespace-nowrap">Semin'le Dünyayı Ters Düz Edin</span>
             </button>
             <button
               type="button"
               onClick={() => scrollToEl("upcoming-events")}
-              className="group flex items-center justify-center gap-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/30 hover:border-[#E02F3C]/50 text-white px-6 sm:px-10 py-5 font-bold text-base sm:text-lg italic uppercase tracking-wider transition-all skew-x-[-10deg] shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+              className="group flex items-center justify-center gap-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/30 hover:border-[#E02F3C]/50 text-white px-4 sm:px-10 py-5 font-bold text-[13px] min-[380px]:text-sm sm:text-lg italic uppercase tracking-wide sm:tracking-wider transition-all skew-x-[-10deg] shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
             >
               <span className="skew-x-[10deg]">Etkinlik Programı</span>
             </button>

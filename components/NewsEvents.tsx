@@ -61,7 +61,7 @@ const NewsEvents: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-10 md:gap-14 items-start">
           {/* Sıradaki etkinliğin afişi — orta boy */}
-          <div className="w-2/3 max-w-[300px] md:w-full">
+          <div className="w-2/3 max-w-[300px] mx-auto md:mx-0 md:w-full">
             {featured ? (
               <button onClick={scrollToEvents} className="group block w-full text-left" aria-label={`${featured.title} — takvimde gör`}>
                 <div data-reveal-img className={`relative overflow-hidden bg-ink/5 ${featured.poster ? "" : "aspect-[3/4]"}`}>

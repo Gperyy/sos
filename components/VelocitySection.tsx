@@ -75,19 +75,20 @@ const CareerFlight: React.FC = () => {
 
   return (
     <section ref={ref} className="relative bg-ink" style={{ height: `${N * 80 + 100}vh` }} aria-label="Kariyer dönüm noktaları">
-      <div className="sticky top-0 h-[100svh] overflow-hidden text-white">
+      <div className="career-stage sticky top-0 h-[100svh] overflow-hidden text-white">
         {/* Arkada dev, soluk yıl */}
         <div
           ref={yearRef}
-          className="absolute -right-[4vw] bottom-[14vh] md:bottom-[8vh] font-black italic text-[38vw] md:text-[30vw] leading-none tracking-tighter text-white/[0.07] select-none pointer-events-none will-change-transform"
+          className="hidden md:block absolute -right-[4vw] bottom-[8vh] font-black italic text-[30vw] leading-none tracking-[0.08em] pr-[0.1em] text-white/[0.07] select-none pointer-events-none will-change-transform"
           aria-hidden="true"
         >
           {current.year}
         </div>
 
         {/* Uçan fotoğraflar */}
-        <div className="absolute inset-0 flex items-start md:items-center justify-center md:justify-end pt-[16vh] md:pt-0 md:pr-[10vw]">
-          <div className="relative w-[78vw] md:w-[42vw] max-w-[620px] aspect-[4/3]">
+        {/* Mobil: fotoğraf yazıyla aynı sol kenarda (--pad), genişliği ekran yüksekliğine göre sınırlı (--pw) */}
+        <div className="absolute inset-0 flex items-start md:items-center justify-start md:justify-end pl-[var(--pad)] pt-[var(--top)] md:pl-0 md:pt-0 md:pr-[10vw]">
+          <div className="relative w-[var(--pw)] md:w-[42vw] max-w-[620px] aspect-[4/3]">
             {careerMoments.map((m, i) => (
               <div
                 key={i}
@@ -97,7 +98,7 @@ const CareerFlight: React.FC = () => {
               >
                 {/* Link ölürse kırık ikon yerine koyu kutu kalsın */}
                 <img src={m.thumbnail} alt={m.title} className="w-full h-full object-cover" onError={hideBroken} />
-                <span className="absolute -bottom-3 left-4 bg-[#E02F3C] text-white font-black italic text-sm px-3 py-1 skew-x-[-10deg]">
+                <span className="absolute -bottom-3 left-0 md:left-4 bg-[#E02F3C] text-white font-black italic text-sm px-3 py-1 skew-x-[-10deg]">
                   <span className="block skew-x-[10deg]">{m.year}</span>
                 </span>
               </div>
@@ -106,10 +107,11 @@ const CareerFlight: React.FC = () => {
         </div>
 
         {/* Metin */}
-        <div className="absolute inset-x-0 bottom-[17vh] md:bottom-auto md:top-1/2 md:-translate-y-1/2 z-[60] pointer-events-none">
+        {/* Mobil: metin her zaman fotoğrafın hemen altından başlar (ekran boyu ne olursa olsun çakışmaz) */}
+        <div className="absolute inset-x-0 top-[calc(var(--top)_+_var(--pw)_*_0.75_+_40px)] md:top-1/2 md:-translate-y-1/2 z-[60] pointer-events-none">
           <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
             <div key={active} className="max-w-[min(440px,100%)] md:max-w-[34vw]">
-              <span className="slam-in block font-black italic text-[#E02F3C] text-6xl md:text-8xl leading-[0.85] tracking-tighter">
+              <span className="slam-in block font-black italic text-[#E02F3C] text-6xl md:text-8xl leading-[0.85] tracking-[0.04em] pr-[0.08em]">
                 {current.year}
               </span>
               <h3 className="slam-in slam-in-2 font-black italic uppercase text-2xl md:text-4xl mt-4 leading-tight [text-shadow:0_2px_20px_rgba(0,0,0,0.8)]">
@@ -118,6 +120,13 @@ const CareerFlight: React.FC = () => {
               <p className="slam-in slam-in-3 text-white/70 text-base md:text-lg font-medium leading-relaxed mt-3 [text-shadow:0_2px_16px_rgba(0,0,0,0.9)]">
                 {current.description}
               </p>
+              {/* Mobil: dev soluk yıl metnin altında, arada sabit boşlukla; kısa ekranlarda yer olmadığı için gizli (masaüstünde sağ altta) */}
+              <span
+                className="md:hidden block [@media(max-height:760px)]:hidden mt-6 font-black italic text-[30vw] leading-none tracking-[0.08em] text-white/[0.07] select-none"
+                aria-hidden="true"
+              >
+                {current.year}
+              </span>
             </div>
           </div>
         </div>
