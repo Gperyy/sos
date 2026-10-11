@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail } from "lucide-react";
+import { Mail, ArrowRight } from "lucide-react";
 import ScrollStatement from "./ui/ScrollStatement";
 import { useLightbox } from "./ui/Lightbox";
 import { useNav } from "./ui";
@@ -113,12 +113,23 @@ const FlyWithSemin: React.FC = () => {
                   </h3>
                 </div>
                 {/* İletişim sayfasına götürür */}
+                {/* Hover: koyu eğik panel soldan süpürür, yazı beyazlar, zarf sağa kayar ve ok gelir */}
                 <button
                   type="button"
                   onClick={() => go("contact")}
-                  className="relative z-10 mt-8 inline-flex items-center justify-center gap-2 bg-white text-[#E02F3C] px-6 py-4 font-black italic uppercase tracking-wider hover:bg-gray-100 transition-colors"
+                  className="group/btn relative z-10 mt-8 overflow-hidden inline-flex items-center justify-center bg-white text-[#E02F3C] px-6 py-4 font-black italic uppercase tracking-wider shadow-lg transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.35)] focus-visible:-translate-y-1 active:translate-y-0"
                 >
-                  <Mail className="w-5 h-5" /> Randevu Talep Et
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-y-0 -left-[20%] w-[140%] bg-[#181210] -skew-x-[20deg] -translate-x-[110%] group-hover/btn:translate-x-0 group-focus-visible/btn:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.18,1)]"
+                  ></span>
+                  <span className="relative z-10 flex items-center gap-2 transition-colors duration-300 group-hover/btn:text-white group-focus-visible/btn:text-white">
+                    <Mail className="w-5 h-5 transition-transform duration-500 group-hover/btn:-rotate-12 group-hover/btn:scale-110" />
+                    Randevu Talep Et
+                    <span className="inline-flex overflow-hidden max-w-0 opacity-0 group-hover/btn:max-w-[2rem] group-hover/btn:opacity-100 group-focus-visible/btn:max-w-[2rem] group-focus-visible/btn:opacity-100 transition-all duration-500">
+                      <ArrowRight className="w-5 h-5 ml-1 -translate-x-3 group-hover/btn:translate-x-0 group-focus-visible/btn:translate-x-0 transition-transform duration-500 text-[#E02F3C]" />
+                    </span>
+                  </span>
                 </button>
               </div>
             </div>
