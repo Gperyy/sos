@@ -71,16 +71,16 @@ const careerMoments: CareerMoment[] = [
     title: { tr: "İki Milyon Seyirci", en: "Two Million Spectators" },
     description: {
       tr: "İzmir'in kurtuluşunun 100. yılında İzmir Körfezi'nde iki milyon kişiye gösteri yaptı; babasından 'Mor Menekşe'yi devraldı.",
-      en: "Performed for two million people over the Gulf of Izmir on the 100th anniversary of Izmir's liberation, and took over 'Mor Menekşe' from her father.",
+      en: "Performed for two million people over the Gulf of Izmir on the 100th anniversary of Izmir's liberation, and took over the Purple Violet from her father.",
     },
     thumbnail: "/images/kariyer-2022.jpg",
   },
   {
     year: "2023",
-    title: { tr: "Yeni Menekşe ile Avrupa", en: "Europe with Yeni Menekşe" },
+    title: { tr: "Yeni Menekşe ile Avrupa", en: "Europe with the New Violet" },
     description: {
       tr: "Yenilenen 'Yeni Menekşe' ile Almanya'daki Flugtage Bautzen'de uluslararası sahneye çıkarak ülkemizi temsil etti.",
-      en: "Took the renewed 'Yeni Menekşe' to the international stage at Flugtage Bautzen in Germany, representing Türkiye.",
+      en: "Took the renewed New Violet to the international stage at Flugtage Bautzen in Germany, representing Türkiye.",
     },
     thumbnail: "/images/kariyer-2023.jpg",
   },

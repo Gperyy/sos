@@ -7,11 +7,11 @@ import { useLightbox } from "./ui/Lightbox";
 
 // Fotoğraflar eski siteden (seminozturk.com — Semin'in Uçağı), bölüm sırasıyla: /public/images/ucak
 const yeniMeneksePhotos: { src: string; alt: Tx }[] = [
-  { src: "/images/ucak/yeni-menekse-1.jpg", alt: { tr: "Yeni Menekşe pistte", en: "Yeni Menekşe on the runway" } },
-  { src: "/images/ucak/yeni-menekse-2.jpg", alt: { tr: "Yeni Menekşe önden görünüm", en: "Yeni Menekşe, front view" } },
+  { src: "/images/ucak/yeni-menekse-1.jpg", alt: { tr: "Yeni Menekşe pistte", en: "The New Violet on the runway" } },
+  { src: "/images/ucak/yeni-menekse-2.jpg", alt: { tr: "Yeni Menekşe önden görünüm", en: "The New Violet, front view" } },
   {
     src: "/images/ucak/yeni-menekse-gopro-1.jpg",
-    alt: { tr: "Yeni Menekşe uçuşta — kamera kaydı", en: "Yeni Menekşe in flight — onboard camera footage" },
+    alt: { tr: "Yeni Menekşe uçuşta — kamera kaydı", en: "The New Violet in flight — onboard camera footage" },
   },
   {
     src: "/images/ucak/yeni-menekse-gopro-2.jpg",
@@ -22,22 +22,22 @@ const yeniMeneksePhotos: { src: string; alt: Tx }[] = [
   },
 ];
 const morMeneksePhotos: { src: string; alt: Tx }[] = [
-  { src: "/images/ucak/mor-menekse-1.jpg", alt: { tr: "Mor Menekşe duman izleriyle", en: "Mor Menekşe with smoke trails" } },
+  { src: "/images/ucak/mor-menekse-1.jpg", alt: { tr: "Mor Menekşe duman izleriyle", en: "The Purple Violet with smoke trails" } },
   {
     src: "/images/ucak/ali-ismet-ozturk-mor-menekse.jpg",
-    alt: { tr: "Ali İsmet Öztürk ve Mor Menekşe", en: "Ali Ismet Öztürk and Mor Menekşe" },
+    alt: { tr: "Ali İsmet Öztürk ve Mor Menekşe", en: "Ali Ismet Öztürk and the Purple Violet" },
   },
   {
     src: "/images/ucak/ali-ismet-ozturk-video-kapak.jpg",
     alt: { tr: "Ali İsmet Öztürk kokpitte", en: "Ali Ismet Öztürk in the cockpit" },
   },
   { src: "/images/ucak/gosteri-1.jpg", alt: { tr: "Gün batımında gösteri", en: "Display at sunset" } },
-  { src: "/images/ucak/gosteri-2.jpg", alt: { tr: "Mor Menekşe alçak geçiş", en: "Mor Menekşe low pass" } },
+  { src: "/images/ucak/gosteri-2.jpg", alt: { tr: "Mor Menekşe alçak geçiş", en: "The Purple Violet low pass" } },
   { src: "/images/ucak/gosteri-3.jpg", alt: { tr: "İstanbul Park'ta gösteri", en: "Display at Istanbul Park" } },
-  { src: "/images/ucak/gosteri-4.jpg", alt: { tr: "Ali İsmet Öztürk Mor Menekşe ile", en: "Ali Ismet Öztürk with Mor Menekşe" } },
+  { src: "/images/ucak/gosteri-4.jpg", alt: { tr: "Ali İsmet Öztürk Mor Menekşe ile", en: "Ali Ismet Öztürk with the Purple Violet" } },
   {
     src: "/images/ucak/mor-menekse-2.jpg",
-    alt: { tr: "Mor Menekşe — M.K. Atatürk yazılı kanatlar", en: "Mor Menekşe — wings inscribed “M.K. Atatürk”" },
+    alt: { tr: "Mor Menekşe — M.K. Atatürk yazılı kanatlar", en: "The Purple Violet — wings inscribed “M.K. Atatürk”" },
   },
   { src: "/images/ucak/ali-ismet-ozturk-1.jpg", alt: { tr: "Ali İsmet Öztürk", en: "Ali Ismet Öztürk" } },
   { src: "/images/ucak/ali-ismet-ozturk-2.jpg", alt: { tr: "Ali İsmet Öztürk kokpitte", en: "Ali Ismet Öztürk in the cockpit" } },
@@ -87,7 +87,7 @@ const Aircraft: React.FC = () => {
         </div>
 
         <div className="mb-12" data-reveal data-reveal-delay="1">
-          <h3 className="font-black italic text-4xl md:text-6xl text-[#E02F3C] uppercase leading-none">Yeni Menekşe</h3>
+          <h3 className="font-black italic text-4xl md:text-6xl text-[#E02F3C] uppercase leading-none">{t("Yeni Menekşe", "The New Violet")}</h3>
         </div>
 
         {/* Teknik bilgi kartları */}
@@ -159,10 +159,10 @@ const Aircraft: React.FC = () => {
                 </>,
                 <>
                   <p>
-                    One of the most advanced aerobatic aircraft in the world, “Yeni Menekşe” is a custom-built aircraft developed purely for aerobatics: based on the Pitts, yet far superior to it. It was built in 2003 by Ali Ismet Öztürk, Türkiye’s first Professional National Aerobatic Pilot, and his team, and was named “Mor Menekşe” (Purple Violet). A year in the making, the aircraft brought new visual drama to established maneuvers, raising both airshow quality and flight safety. Designed to withstand high G-loads, this special display machine is stressed to +/-10 G and has every feature needed to keep pilot fatigue to a minimum under those loads.
+                    One of the most advanced aerobatic aircraft in the world, the New Violet is a custom-built aircraft developed purely for aerobatics: based on the Pitts, yet far superior to it. It was built in 2003 by Ali Ismet Öztürk, Türkiye’s first Professional National Aerobatic Pilot, and his team, and was named “Purple Violet”. A year in the making, the aircraft brought new visual drama to established maneuvers, raising both airshow quality and flight safety. Designed to withstand high G-loads, this special display machine is stressed to +/-10 G and has every feature needed to keep pilot fatigue to a minimum under those loads.
                   </p>
                   <p className="border-l-4 border-[#E02F3C] pl-4 italic">
-                    After Ali Ismet Öztürk’s farewell to professional aerobatics at the SHG Airshow on 13 September 2021, the “Legendary Mor Menekşe” underwent a comprehensive overhaul thanks to the dedicated work of Mak Teknik, emerging with a new look. Now known as “Yeni Menekşe” (New Violet), it continues its adventures in the skies with Semin Öztürk Şener.
+                    After Ali Ismet Öztürk’s farewell to professional aerobatics at the SHG Airshow on 13 September 2021, the legendary Purple Violet underwent a comprehensive overhaul thanks to the dedicated work of Mak Teknik, emerging with a new look. Now known as the New Violet, it continues its adventures in the skies with Semin Öztürk Şener.
                   </p>
                 </>
               )}
@@ -180,7 +180,7 @@ const Aircraft: React.FC = () => {
 
         {/* Ali İsmet Öztürk */}
         <div className="mt-16 pt-16 border-t border-white/10" data-reveal>
-          <h4 className="font-black italic text-2xl md:text-3xl uppercase text-white mb-8">{t("Ali İsmet Öztürk ve Mor Menekşe", "Ali Ismet Öztürk and Mor Menekşe")}</h4>
+          <h4 className="font-black italic text-2xl md:text-3xl uppercase text-white mb-8">{t("Ali İsmet Öztürk ve Mor Menekşe", "Ali Ismet Öztürk and the Purple Violet")}</h4>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 text-gray-300 leading-relaxed font-medium">
             {t(
               <>
@@ -226,7 +226,7 @@ const Aircraft: React.FC = () => {
 
       {/* Mor Menekşe fotoğrafları — sabitlenen yatay şerit (data-reveal dışında: transform sticky'yi bozar) */}
       <div className="mt-12">
-        <HorizontalGallery photos={morPhotos} backdrop="Mor Menekşe" />
+        <HorizontalGallery photos={morPhotos} backdrop={t("Mor Menekşe", "Purple Violet")} />
       </div>
 
       <div className="max-w-[1280px] mx-auto px-4 sm:px-8">

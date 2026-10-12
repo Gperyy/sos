@@ -13,7 +13,7 @@ const posts: { code: string; alt: Tx; aspect: number }[] = [
   { code: "DXmEkpMDEJG", alt: { tr: "Dünya Pilotlar Günümüz Kutlu Olsun", en: "Happy World Pilots' Day" }, aspect: 1461 / 1066 },
   {
     code: "DVQRpfrjB-j",
-    alt: { tr: "Dynon Avionics 2026 yılında Yeni Menekşe ile gökyüzünde", en: "Dynon Avionics in the sky with Yeni Menekşe in 2026" },
+    alt: { tr: "Dynon Avionics 2026 yılında Yeni Menekşe ile gökyüzünde", en: "Dynon Avionics in the sky with the New Violet in 2026" },
     aspect: 980 / 1226,
   },
   { code: "DOqpejdjK06", alt: { tr: "Kokpitten pist görünümü", en: "View of the runway from the cockpit" }, aspect: 952 / 1269 },

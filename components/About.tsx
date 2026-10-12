@@ -119,8 +119,8 @@ const chapters: { paragraphs: Tx<string[]>; photos?: ChapterPhoto[] }[] = [
       ],
       en: [
         "Continuing her displays in 2022, Semin Öztürk Şener performed for 2 million spectators over the Gulf of Izmir at the shows marking the 100th anniversary of Izmir’s liberation from enemy occupation. She then completed her events calendar with displays at SHG Airshow and in Istanbul, in front of more than 100,000 spectators.",
-        "At the end of 2022, Semin Öztürk Şener took over the flag from her father, beginning to fly the \"Legendary Mor Menekşe\" (Purple Violet), designed by her father Ali Ismet Öztürk and his team and one of the most advanced aerobatic aircraft in the world. Thanks to the dedicated and meticulous work of Mak Teknik, Mor Menekşe underwent a comprehensive overhaul; its look was completely transformed and it was renamed \"Yeni Menekşe\" (New Violet).",
-        "In 2023, she flew her first international display with \"Yeni Menekşe\" at Flugtage Bautzen in Germany, successfully representing Türkiye.",
+        "At the end of 2022, Semin Öztürk Şener took over the flag from her father, beginning to fly the legendary Purple Violet, designed by her father Ali Ismet Öztürk and his team and one of the most advanced aerobatic aircraft in the world. Thanks to the dedicated and meticulous work of Mak Teknik, the Purple Violet underwent a comprehensive overhaul; its look was completely transformed and it was renamed \"New Violet\".",
+        "In 2023, she flew her first international display with the New Violet at Flugtage Bautzen in Germany, successfully representing Türkiye.",
       ],
     },
     photos: [

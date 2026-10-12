@@ -81,11 +81,11 @@ const PressClippings: React.FC = () => {
 const galleryPhotos: { src: string; alt: Tx }[] = [
   { src: "/images/galeri/01-izmir-airshow.jpg", alt: { tr: "İzmir Körfezi'nde gösteri", en: "Air show over the Gulf of Izmir" } },
   { src: "/images/galeri/02-cumhuriyet-fotografi.jpg", alt: { tr: "Cumhuriyet fotoğrafı — ay yıldız", en: "Republic Day photo — crescent and star" } },
-  { src: "/images/galeri/03-yeni-menekse.jpg", alt: { tr: "Yeni Menekşe", en: "Yeni Menekşe" } },
+  { src: "/images/galeri/03-yeni-menekse.jpg", alt: { tr: "Yeni Menekşe", en: "The New Violet" } },
   { src: "/images/galeri/04-muze-duvari.jpg", alt: { tr: "Müze duvarındaki akrobasi fotoğrafı", en: "Aerobatics photo on the museum wall" } },
   { src: "/images/galeri/05-airact.jpg", alt: { tr: "AirACT logolu uçak", en: "Aircraft with the AirACT logo" } },
   { src: "/images/galeri/06-seyirciler-arasinda.jpg", alt: { tr: "Semin seyirciler arasında", en: "Semin among the spectators" } },
-  { src: "/images/galeri/07-gosteri-alani.jpg", alt: { tr: "Gösteri alanında Yeni Menekşe", en: "Yeni Menekşe at the show grounds" } },
+  { src: "/images/galeri/07-gosteri-alani.jpg", alt: { tr: "Gösteri alanında Yeni Menekşe", en: "The New Violet at the show grounds" } },
   { src: "/images/galeri/08-tutima-academy-ilk-ucus.jpg", alt: { tr: "Tutima Academy'de ilk uçuş", en: "First flight at Tutima Academy" } },
   { src: "/images/galeri/09-ustten-gorunum.jpg", alt: { tr: "Semin'in uçağı üstten", en: "Semin's aircraft from above" } },
   { src: "/images/galeri/10-piper-cub.jpg", alt: { tr: "Piper Cub uçağı", en: "Piper Cub aircraft" } },
