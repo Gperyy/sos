@@ -1,17 +1,25 @@
 import React from "react";
 import { ExternalLink, MapPin, Clock } from "lucide-react";
-import { splitEvents, formatDate } from "./data/events";
+import { useLang, useT } from "./ui";
+import { splitEvents, formatDate, localizeEvent } from "./data/events";
 import type { EventData } from "./data/events";
 
 // Etkinlik Takvimi — ŞU ANKİ düzen + MAYIS font (Lexend) & renk/buton (kırmızı skew/glow).
 // Veriler: components/data/events.ts (yaklaşan/geçmiş tarihe göre otomatik ayrılır).
 
 // Afiş varsa kendi oranında, kırpılmadan; tıklayınca tam boy açılır
-const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) =>
-  poster ? (
+const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) => {
+  const t = useT();
+  return poster ? (
     <div data-reveal-img className={`overflow-hidden border border-black/10 ${className}`}>
-      <a href={poster} target="_blank" rel="noopener noreferrer" aria-label={`${alt} afişini tam boy aç`} className="block">
-        <img src={poster} alt={`${alt} afişi`} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
+      <a
+        href={poster}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t(`${alt} afişini tam boy aç`, `Open the ${alt} poster in full size`)}
+        className="block"
+      >
+        <img src={poster} alt={t(`${alt} afişi`, `${alt} poster`)} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
       </a>
     </div>
   ) : (
@@ -21,6 +29,7 @@ const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }
       </div>
     </div>
   );
+};
 
 const SubHeading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="flex items-center gap-3 mb-10">
@@ -30,7 +39,7 @@ const SubHeading: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const EventCard: React.FC<{ event: EventData; past?: boolean }> = ({ event, past }) => {
-  const d = formatDate(event);
+  const d = formatDate(event, useLang());
   return (
     <article className="group" data-reveal>
       <PosterFrame poster={event.poster} alt={event.title} />
@@ -48,10 +57,12 @@ const EventCard: React.FC<{ event: EventData; past?: boolean }> = ({ event, past
 };
 
 const Events: React.FC = () => {
+  const lang = useLang();
+  const t = useT();
   const { upcoming, past } = splitEvents();
-  const [featured, ...moreUpcoming] = upcoming;
-  const fd = featured ? formatDate(featured) : undefined;
-  const pastWithPoster = past.filter((e) => e.poster);
+  const [featured, ...moreUpcoming] = upcoming.map((e) => localizeEvent(e, lang));
+  const fd = featured ? formatDate(featured, lang) : undefined;
+  const pastWithPoster = past.filter((e) => e.poster).map((e) => localizeEvent(e, lang));
 
   return (
     <section id="events" className="py-24 bg-background-light font-['Lexend']">
@@ -59,10 +70,10 @@ const Events: React.FC = () => {
         {/* Mayıs başlık */}
         <div className="flex items-center gap-4 mb-4" data-reveal>
           <div className="h-10 w-2 bg-[#E02F3C] transform skew-x-[-15deg] shadow-[0_0_15px_rgba(224,47,60,0.5)]"></div>
-          <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-[#181210]">Etkinlik Takvimi</h2>
+          <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase text-[#181210]">{t("Etkinlik Takvimi", "Events Calendar")}</h2>
         </div>
         <p className="text-gray-500 text-lg font-medium mb-14 max-w-2xl" data-reveal>
-          2026 Semin Öztürk Şener Akrobasi Gösterileri
+          {t("2026 Semin Öztürk Şener Akrobasi Gösterileri", "Semin Öztürk Şener Aerobatic Displays 2026")}
         </p>
 
         {/* Sıradaki etkinlik */}
@@ -73,7 +84,7 @@ const Events: React.FC = () => {
             </div>
             <div className="lg:col-span-7" data-reveal>
               <span className="inline-block bg-[#E02F3C] text-white text-xs font-black italic uppercase tracking-wider px-4 py-1.5 skew-x-[-10deg] shadow-[0_0_15px_rgba(224,47,60,0.5)] mb-5">
-                <span className="block skew-x-[10deg]">Sıradaki Etkinlik · {fd.day} {fd.month} {fd.year}</span>
+                <span className="block skew-x-[10deg]">{t("Sıradaki Etkinlik", "Next Event")} · {fd.day} {fd.month} {fd.year}</span>
               </span>
               <h3 lang={featured.lang} className="text-4xl md:text-5xl font-black italic uppercase text-[#181210] leading-none">{featured.title}</h3>
               {featured.description && (
@@ -85,7 +96,7 @@ const Events: React.FC = () => {
                 </span>
                 {featured.time && (
                   <span className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-[#E02F3C]" /> Saat {featured.time}
+                    <Clock className="w-4 h-4 text-[#E02F3C]" /> {t(`Saat ${featured.time}`, featured.time)}
                   </span>
                 )}
               </div>
@@ -96,21 +107,21 @@ const Events: React.FC = () => {
                   rel="noopener noreferrer"
                   className="mt-8 inline-block bg-[#E02F3C] hover:bg-[#FF4D5A] text-white px-8 py-4 font-black italic text-sm uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(224,47,60,0.5)] hover:shadow-[0_0_30px_rgba(224,47,60,0.7)] skew-x-[-10deg]"
                 >
-                  <span className="flex items-center gap-2 skew-x-[10deg]">Web Sitesi <ExternalLink className="w-4 h-4" /></span>
+                  <span className="flex items-center gap-2 skew-x-[10deg]">{t("Web Sitesi", "Website")} <ExternalLink className="w-4 h-4" /></span>
                 </a>
               )}
             </div>
           </div>
         ) : (
           <p className="mb-20 text-[#181210] text-2xl font-black italic uppercase" data-reveal>
-            Yeni etkinlikler yakında duyurulacak.
+            {t("Yeni etkinlikler yakında duyurulacak.", "New events will be announced soon.")}
           </p>
         )}
 
         {/* Diğer yaklaşan etkinlikler */}
         {moreUpcoming.length > 0 && (
           <div className="mb-20">
-            <SubHeading>Yaklaşan Etkinlikler</SubHeading>
+            <SubHeading>{t("Yaklaşan Etkinlikler", "Upcoming Events")}</SubHeading>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 items-start">
               {moreUpcoming.map((e) => (
                 <EventCard key={e.id} event={e} />
@@ -122,7 +133,7 @@ const Events: React.FC = () => {
         {/* Geçmiş etkinlikler — en yeni önce; yalnızca afişi olanlar gösterilir */}
         {pastWithPoster.length > 0 && (
           <>
-            <SubHeading>Geçmiş Etkinlikler</SubHeading>
+            <SubHeading>{t("Geçmiş Etkinlikler", "Past Events")}</SubHeading>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 items-start">
               {pastWithPoster.map((e) => (
                 <EventCard key={e.id} event={e} past />

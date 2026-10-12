@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, Facebook, Instagram } from "lucide-react";
+import { useLang, useSetLang } from "./ui";
 import type { TabType } from "./ui";
-type Language = "tr" | "en";
 
 interface HeaderProps {
   activeTab: TabType;
@@ -10,7 +10,7 @@ interface HeaderProps {
 
 const navItemsData: { tr: string; en: string; tab: TabType }[] = [
   { tr: "Hakkında", en: "About", tab: "about" },
-  { tr: "Semin'in Uçağı", en: "Aircraft", tab: "aircraft" },
+  { tr: "Semin'in Uçağı", en: "Semin's Aircraft", tab: "aircraft" },
   { tr: "Etkinlik Takvimi", en: "Events", tab: "events" },
   { tr: "Medya", en: "Media", tab: "media" },
   { tr: "Semin ile Uç", en: "Fly with Semin", tab: "fly" },
@@ -23,7 +23,8 @@ const MENU_CLOSED = "polygon(130% 0%, 160% 0%, 130% 100%, 100% 100%)";
 // Header — MAYIS (orijinal) hali, Lexend.
 const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [language, setLanguage] = useState<Language>("tr");
+  const language = useLang();
+  const setLanguage = useSetLang();
 
   useEffect(() => {
     // Not: lenis.stop() kullanılmaz — html'e overflow:hidden verip yapışkan header'ı bozuyor.
@@ -42,7 +43,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
     setMobileMenuOpen(false);
   };
 
-  const toggleLanguage = () => setLanguage((prev) => (prev === "tr" ? "en" : "tr"));
+  const toggleLanguage = () => setLanguage(language === "tr" ? "en" : "tr");
 
   const navItems = navItemsData.map((item) => ({
     name: language === "tr" ? item.tr : item.en,
@@ -57,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
             type="button"
             className="group flex items-center gap-3 flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E02F3C]"
             onClick={() => onTabChange("home")}
-            aria-label="Semin Öztürk Şener — ana sayfa"
+            aria-label={language === "tr" ? "Semin Öztürk Şener — ana sayfa" : "Semin Öztürk Şener — home"}
           >
             {/* Logodaki uçak figürü (SVG'den ayrılmış) */}
             <img
@@ -67,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
               className="h-11 w-auto transition-transform duration-300 group-hover:-rotate-6 group-hover:-translate-y-0.5"
             />
             <h2 className="text-[#181210] text-xl font-black italic uppercase tracking-normal pr-1">
-              SEMİN ÖZTÜRK ŞENER
+              Semin Öztürk Şener
             </h2>
           </button>
 
@@ -104,7 +105,11 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
           <button
             className="lg:hidden relative w-11 h-11 -mr-1 flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E02F3C]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"}
+            aria-label={
+              language === "tr"
+                ? mobileMenuOpen ? "Menüyü kapat" : "Menüyü aç"
+                : mobileMenuOpen ? "Close menu" : "Open menu"
+            }
             aria-expanded={mobileMenuOpen}
           >
             <span className="relative block w-7 h-5 skew-x-[-12deg]" aria-hidden="true">
@@ -185,6 +190,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab, onTabChange }) => {
                 onClick={toggleLanguage}
                 tabIndex={mobileMenuOpen ? 0 : -1}
                 className="text-sm font-black uppercase tracking-wide text-[#181210] hover:text-[#E02F3C] border border-[#181210]/15 px-3 py-1.5 transition-colors"
+                aria-label={language === "tr" ? "Switch to English" : "Türkçe'ye geç"}
               >
                 {language === "tr" ? "EN" : "TR"}
               </button>

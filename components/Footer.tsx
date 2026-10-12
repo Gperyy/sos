@@ -1,25 +1,25 @@
 import React from "react";
 import { Facebook, Instagram, ArrowRight } from "lucide-react";
-import { useNav } from "./ui";
+import { useNav, useLang, useT } from "./ui";
 
 // Sponsorlar — logolar ve bağlantılar eski siteden (seminozturk.com) alınmıştır.
 // Logo dosyaları: /public/images/sponsorlar — arka planları temizlenmiş (saydam PNG/SVG), kırpılmış.
 // Üç sıra: ilk sıra büyük ana destekçiler, diğer iki sıra küçük. h = masaüstündeki logo yüksekliği (px);
 // logoların biçimi farklı olduğundan (arma, yazı, dikey) her biri gözle eşit ağırlıkta görünecek şekilde ayarlı.
 // ar = logo en/boy oranı (mobil ızgarada eşit görsel ağırlık için)
-type Sponsor = { name: string; logo: string; url?: string; h: number; ar: number };
+type Sponsor = { name: string; nameEn?: string; logo: string; url?: string; h: number; ar: number };
 const sponsorRows: Sponsor[][] = [
   [
-    { name: "MSO Hava ve Uzay Müzesi", logo: "/images/sponsorlar/mso-muze.png", url: "http://msomuseum.com/", h: 160, ar: 0.435 },
-    { name: "Sivrihisar Havacılık Merkezi", logo: "/images/sponsorlar/shm.png", url: "http://shm.aero/", h: 120, ar: 0.957 },
+    { name: "MSO Hava ve Uzay Müzesi", nameEn: "MSO Air & Space Museum", logo: "/images/sponsorlar/mso-muze.png", url: "http://msomuseum.com/", h: 160, ar: 0.435 },
+    { name: "Sivrihisar Havacılık Merkezi", nameEn: "Sivrihisar Aviation Center", logo: "/images/sponsorlar/shm.png", url: "http://shm.aero/", h: 120, ar: 0.957 },
     { name: "Mach Aviation", logo: "/images/sponsorlar/mach-aviation.png", url: "http://www.mach.aero/", h: 84, ar: 1.853 },
     { name: "Acromach Sky Dancer", logo: "/images/sponsorlar/sky-dancer-acromach.png", url: "http://acromach.com/", h: 124, ar: 0.97 },
-    { name: "MSO Müze Dükkanı", logo: "/images/sponsorlar/mso-dukkan.png", url: "http://shop.msomuseum.com/", h: 56, ar: 3.629 },
+    { name: "MSO Müze Dükkanı", nameEn: "MSO Museum Shop", logo: "/images/sponsorlar/mso-dukkan.png", url: "http://shop.msomuseum.com/", h: 56, ar: 3.629 },
   ],
   [
     { name: "Airflow Performance", logo: "/images/sponsorlar/airflow-performance.png", url: "https://airflowperformance.com/", h: 46, ar: 2.428 },
     { name: "Barry Controls", logo: "/images/sponsorlar/barry-controls.png", h: 48, ar: 1.806 },
-    { name: "BŞK Tarım Ürünleri", logo: "/images/sponsorlar/bsk.png", h: 33, ar: 5.806 },
+    { name: "BŞK Tarım Ürünleri", nameEn: "BŞK Agricultural Products", logo: "/images/sponsorlar/bsk.png", h: 33, ar: 5.806 },
     { name: "Dynon Avionics", logo: "/images/sponsorlar/dynon.png", url: "https://dynonavionics.com/", h: 50, ar: 1.689 },
     { name: "Goodyear", logo: "/images/sponsorlar/goodyear.png", url: "https://www.goodyear.eu/tr_tr/consumer.html", h: 32, ar: 5.679 },
     { name: "Hooker Harness", logo: "/images/sponsorlar/hooker-harness.png", url: "https://www.hookerharness.com/", h: 38, ar: 3.278 },
@@ -37,10 +37,11 @@ const sponsorRows: Sponsor[][] = [
 // grid: mobil ızgara — her logo yaklaşık aynı alanı kaplar (dikey/arma uzun, yatay yazı alçak), hücreye sığar
 const GRID_AREA = 2600; // px²
 const SponsorLogo: React.FC<{ s: Sponsor; grid?: boolean }> = ({ s, grid }) => {
+  const alt = useLang() === "en" && s.nameEn ? s.nameEn : s.name;
   const img = grid ? (
     <img
       src={s.logo}
-      alt={s.name}
+      alt={alt}
       loading="lazy"
       style={{ height: `${Math.min(68, Math.round(Math.sqrt(GRID_AREA / s.ar)))}px` }}
       className="block w-auto max-w-full object-contain"
@@ -48,7 +49,7 @@ const SponsorLogo: React.FC<{ s: Sponsor; grid?: boolean }> = ({ s, grid }) => {
   ) : (
     <img
       src={s.logo}
-      alt={s.name}
+      alt={alt}
       loading="lazy"
       style={{ ["--h" as string]: `${s.h}px` }}
       className="block w-auto max-w-full h-[var(--h)] object-contain transition-transform duration-500 hover:scale-105"
@@ -66,12 +67,13 @@ const SponsorLogo: React.FC<{ s: Sponsor; grid?: boolean }> = ({ s, grid }) => {
 const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = false, showSponsors = false }) => {
   const go = useNav();
   const goFly = () => go("fly");
+  const t = useT();
 
   return (
     <>
       {/* Destekçiler — başlıksız logo alanı; yalnızca ana sayfada */}
       {showSponsors && (
-        <section id="sponsors" aria-label="Destekçiler" className="bg-paper border-t border-ink/10 py-16 md:py-20 scroll-mt-24">
+        <section id="sponsors" aria-label={t("Destekçiler", "Supporters")} className="bg-paper border-t border-ink/10 py-16 md:py-20 scroll-mt-24">
           <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
             {/* Mobil: 3 sütunlu düzenli ızgara (15 logo = 5 tam satır), logolar eşit görsel ağırlıkta */}
             <div className="md:hidden grid grid-cols-3 gap-x-4 gap-y-5 items-center">
@@ -110,9 +112,16 @@ const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = f
             <div className="bg-[#E02F3C] rounded-none transform -skew-x-2 px-5 py-10 sm:p-10 md:p-20 text-center relative overflow-hidden shadow-xl group">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent opacity-80"></div>
               <div className="relative z-10 max-w-2xl mx-auto transform skew-x-2">
-                {/* Mobilde üç düzgün satır: DÜNYAYI / TERS DÜZ ETMEK / İSTER MİSİNİZ? */}
+                {/* Mobilde üç düzgün satır: DÜNYAYI / TERS DÜZ ETMEK / İSTER MİSİNİZ? (EN: WANT TO / TURN THE WORLD / UPSIDE DOWN?) */}
                 <h2 className="text-[1.7rem] leading-[1.15] sm:text-4xl md:text-5xl font-black text-white mb-10 italic uppercase tracking-tight pr-1">
-                  Dünyayı <span className="whitespace-nowrap">Ters Düz Etmek</span> <span className="whitespace-nowrap">İster Misiniz?</span>
+                  {t(
+                    <>
+                      Dünyayı <span className="whitespace-nowrap">Ters Düz Etmek</span> <span className="whitespace-nowrap">İster Misiniz?</span>
+                    </>,
+                    <>
+                      Want to <span className="whitespace-nowrap">Turn the World</span> <span className="whitespace-nowrap">Upside Down?</span>
+                    </>
+                  )}
                 </h2>
                 {/* Hover: koyu eğik panel soldan süpürür, yazı beyazlar, ok kayarak gelir */}
                 <button
@@ -125,7 +134,7 @@ const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = f
                     className="absolute inset-y-0 -left-[20%] w-[140%] bg-[#181210] -skew-x-[20deg] -translate-x-[110%] group-hover/cta:translate-x-0 group-focus-visible/cta:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.18,1)]"
                   ></span>
                   <span className="relative z-10 flex items-center justify-center transition-colors duration-300 group-hover/cta:text-white group-focus-visible/cta:text-white">
-                    Hemen İletişime Geç
+                    {t("Hemen İletişime Geç", "Get in Touch Now")}
                     <span className="inline-flex overflow-hidden max-w-0 opacity-0 group-hover/cta:max-w-[2rem] group-hover/cta:opacity-100 group-focus-visible/cta:max-w-[2rem] group-focus-visible/cta:opacity-100 transition-all duration-500">
                       <ArrowRight className="w-5 h-5 ml-3 -translate-x-3 group-hover/cta:translate-x-0 group-focus-visible/cta:translate-x-0 transition-transform duration-500 text-[#E02F3C]" />
                     </span>
@@ -133,8 +142,16 @@ const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = f
                 </button>
                 <p className="text-white/60 text-sm mt-6 font-medium">
                   {/* Mobilde: 1) Akrobasi tanıtım uçuşları 2) Sivrihisar Havacılık Merkezi'nde 3) gerçekleştirilmektedir. */}
-                  Akrobasi tanıtım uçuşları<br className="md:hidden" /> <span className="whitespace-nowrap">Sivrihisar Havacılık Merkezi'nde</span>
-                  <br className="md:hidden" /> gerçekleştirilmektedir.
+                  {t(
+                    <>
+                      Akrobasi tanıtım uçuşları<br className="md:hidden" /> <span className="whitespace-nowrap">Sivrihisar Havacılık Merkezi'nde</span>
+                      <br className="md:hidden" /> gerçekleştirilmektedir.
+                    </>,
+                    <>
+                      Aerobatic experience flights take place<br className="md:hidden" /> at{" "}
+                      <span className="whitespace-nowrap">Sivrihisar Aviation Center.</span>
+                    </>
+                  )}
                 </p>
               </div>
             </div>
@@ -149,10 +166,11 @@ const Footer: React.FC<{ dark?: boolean; showSponsors?: boolean }> = ({ dark = f
                   {/* Header'daki uçak figürü */}
                   <img src="/images/logo/semin-ucak.svg" alt="" aria-hidden="true" className="h-10 w-auto" />
                   <span className="font-black italic text-2xl tracking-tighter uppercase text-white">
-                    SEMİN ÖZTÜRK ŞENER
+                    {/* Normal yazım + uppercase: TR'de SEMİN, EN'de SEMIN */}
+                    Semin Öztürk Şener
                   </span>
                 </div>
-                <p className="text-gray-500 text-sm font-medium">© 2026 Tüm hakları saklıdır.</p>
+                <p className="text-gray-500 text-sm font-medium">© 2026 {t("Tüm hakları saklıdır.", "All rights reserved.")}</p>
               </div>
               <div className="flex gap-8">
                 <a href="https://www.facebook.com/profile.php?id=100057655285696" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#FF542E] transition-colors transform hover:scale-110 hover:drop-shadow-[0_0_10px_#ff542e]" aria-label="Facebook">

@@ -8,3 +8,5 @@ export { useScrollAnimation, AnimatedSection } from "./useScrollAnimation";
 export { useParallax, Parallax, useMouseParallax } from "./useParallax";
 export { NavContext, useNav } from "./nav";
 export type { TabType } from "./nav";
+export { LangContext, useLang, useSetLang, useT, pick } from "./i18n";
+export type { Lang, Tx } from "./i18n";

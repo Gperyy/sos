@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useLayoutEffect, useCallback, useMemo } from "react";
 import Lenis from "lenis";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -12,33 +12,68 @@ import Events from "./components/Events";
 import Media from "./components/Media";
 import FlyWithSemin from "./components/FlyWithSemin";
 import Contact from "./components/Contact";
-import { NavContext, ErrorBoundary } from "./components/ui";
-import type { TabType } from "./components/ui";
+import { NavContext, LangContext, ErrorBoundary } from "./components/ui";
+import type { TabType, Lang } from "./components/ui";
 
 // Her sekmenin kendi adresi: yenileyince aynı sayfa açılır, geri/ileri tuşları sekmeler arasında çalışır.
-const PATHS: Record<TabType, string> = {
-  home: "/",
-  about: "/hakkinda",
-  aircraft: "/semin-in-ucagi",
-  events: "/etkinlik-takvimi",
-  media: "/medya",
-  fly: "/semin-ile-uc",
-  contact: "/iletisim",
+// Türkçe kökte, İngilizce /en altında.
+const PATHS: Record<Lang, Record<TabType, string>> = {
+  tr: {
+    home: "/",
+    about: "/hakkinda",
+    aircraft: "/semin-in-ucagi",
+    events: "/etkinlik-takvimi",
+    media: "/medya",
+    fly: "/semin-ile-uc",
+    contact: "/iletisim",
+  },
+  en: {
+    home: "/en",
+    about: "/en/about",
+    aircraft: "/en/aircraft",
+    events: "/en/events",
+    media: "/en/media",
+    fly: "/en/fly-with-semin",
+    contact: "/en/contact",
+  },
 };
-const TITLES: Record<TabType, string> = {
-  home: "",
-  about: "Hakkında",
-  aircraft: "Semin'in Uçağı",
-  events: "Etkinlik Takvimi",
-  media: "Medya",
-  fly: "Semin ile Uç",
-  contact: "İletişim",
+const TITLES: Record<Lang, Record<TabType, string>> = {
+  tr: {
+    home: "",
+    about: "Hakkında",
+    aircraft: "Semin'in Uçağı",
+    events: "Etkinlik Takvimi",
+    media: "Medya",
+    fly: "Semin ile Uç",
+    contact: "İletişim",
+  },
+  en: {
+    home: "",
+    about: "About",
+    aircraft: "Semin's Aircraft",
+    events: "Events",
+    media: "Media",
+    fly: "Fly with Semin",
+    contact: "Contact",
+  },
 };
 const BASE_TITLE = "Semin Öztürk Şener";
-const tabFromPath = (path: string): TabType => {
+const HOME_TITLE: Record<Lang, string> = {
+  tr: `${BASE_TITLE} - Profesyonel Akrobasi Pilotu`,
+  en: `${BASE_TITLE} - Professional Aerobatic Pilot`,
+};
+const DESCRIPTION: Record<Lang, string> = {
+  tr: "Semin Öztürk Şener - Türkiye'nin İlk Profesyonel Kadın Akrobasi Pilotu",
+  en: "Semin Öztürk Şener - Türkiye's First Professional Female Aerobatic Pilot",
+};
+type Route = { tab: TabType; lang: Lang };
+const routeFromPath = (path: string): Route => {
   const clean = path.replace(/\/+$/, "") || "/";
-  const hit = (Object.keys(PATHS) as TabType[]).find((t) => PATHS[t] === clean);
-  return hit ?? "home";
+  for (const lang of ["en", "tr"] as Lang[]) {
+    const hit = (Object.keys(PATHS[lang]) as TabType[]).find((t) => PATHS[lang][t] === clean);
+    if (hit) return { tab: hit, lang };
+  }
+  return { tab: "home", lang: clean === "/en" || clean.startsWith("/en/") ? "en" : "tr" };
 };
 
 type LenisLike = { scrollTo: (y: number, o?: { immediate?: boolean; force?: boolean }) => void };
@@ -63,7 +98,7 @@ const restoreScroll = (y: number) => {
   window.setTimeout(tick, 0);
 };
 
-type HistState = { tab?: TabType; key?: string };
+type HistState = { tab?: TabType; lang?: Lang; key?: string };
 const newKey = () => Math.random().toString(36).slice(2, 10);
 const readY = (key?: string) => {
   if (!key) return 0;
@@ -83,7 +118,8 @@ const writeY = (key: string | undefined, y: number) => {
 };
 
 const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>(() => tabFromPath(window.location.pathname));
+  const [route, setRoute] = useState<Route>(() => routeFromPath(window.location.pathname));
+  const { tab: activeTab, lang } = route;
 
   // Kaydırmayı tarayıcı yerine biz geri yükleriz (Lenis ve sonradan yüklenen görseller yüzünden).
   // Her geçmiş kaydının bir anahtarı var; konumu kaydırdıkça sessionStorage'a yazılır (yenilemede kalır).
@@ -91,7 +127,7 @@ const App: React.FC = () => {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     const st = history.state as HistState | null;
     const key = st?.key ?? newKey();
-    if (!st?.key) history.replaceState({ tab: activeTab, key }, "");
+    if (!st?.key) history.replaceState({ tab: activeTab, lang, key }, "");
     restoreScroll(readY(key));
 
     let t: number | undefined;
@@ -101,7 +137,7 @@ const App: React.FC = () => {
     };
     const onPop = (e: PopStateEvent) => {
       const s2 = e.state as HistState | null;
-      setActiveTab(s2?.tab ?? tabFromPath(window.location.pathname));
+      setRoute(s2?.tab && s2.lang ? { tab: s2.tab, lang: s2.lang } : routeFromPath(window.location.pathname));
       restoreScroll(readY(s2?.key));
     };
     // Yenileme / sayfadan çıkış: son konumu hemen yaz
@@ -120,22 +156,36 @@ const App: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Sekme başlığı
-  useEffect(() => {
-    document.title = TITLES[activeTab] ? `${TITLES[activeTab]} | ${BASE_TITLE}` : `${BASE_TITLE} - Profesyonel Akrobasi Pilotu`;
-  }, [activeTab]);
+  // Sekme başlığı ve dil. <html lang> boyamadan önce ayarlanır: CSS `uppercase` buna göre i → İ / I yapar
+  useLayoutEffect(() => {
+    document.documentElement.lang = lang;
+    document.title = TITLES[lang][activeTab] ? `${TITLES[lang][activeTab]} | ${BASE_TITLE}` : HOME_TITLE[lang];
+    document.querySelector('meta[name="description"]')?.setAttribute("content", DESCRIPTION[lang]);
+  }, [activeTab, lang]);
 
   // Sekme değiştir: adres çubuğuna yaz (geçmişe ekle) + yeni sayfanın başına anında dön
-  const navigate = useCallback((tab: TabType) => {
-    const current = tabFromPath(window.location.pathname);
-    if (tab !== current) {
+  const go = useCallback((next: Route) => {
+    const current = routeFromPath(window.location.pathname);
+    if (next.tab !== current.tab || next.lang !== current.lang) {
       // Ayrılırken bulunduğumuz konumu kaydet: geri dönünce aynı yerden devam
       writeY((history.state as HistState | null)?.key, window.scrollY);
-      history.pushState({ tab, key: newKey() }, "", PATHS[tab]);
+      history.pushState({ ...next, key: newKey() }, "", PATHS[next.lang][next.tab]);
     }
-    setActiveTab(tab);
-    requestAnimationFrame(() => scrollToY(0));
+    setRoute(next);
   }, []);
+  const navigate = useCallback(
+    (tab: TabType) => {
+      go({ tab, lang: routeFromPath(window.location.pathname).lang });
+      requestAnimationFrame(() => scrollToY(0));
+    },
+    [go]
+  );
+  // Dil değiştir: aynı sayfada kalınır, kaydırma konumu korunur
+  const setLang = useCallback(
+    (next: Lang) => go({ tab: routeFromPath(window.location.pathname).tab, lang: next }),
+    [go]
+  );
+  const langValue = useMemo(() => ({ lang, setLang }), [lang, setLang]);
 
   // Leclerc tarzı akıcı/ataletli kaydırma (reduced-motion'da devre dışı)
   useEffect(() => {
@@ -286,21 +336,23 @@ const App: React.FC = () => {
   };
 
   return (
-    <NavContext.Provider value={navigate}>
-      <div className="relative flex min-h-screen w-full flex-col font-sans">
-        {/* Her bölüm ayrı sınırda: birindeki hata diğerlerini (ve tüm sayfayı) götürmez */}
-        <ErrorBoundary>
-          <Header activeTab={activeTab} onTabChange={navigate} />
-        </ErrorBoundary>
-        <main className="flex-grow">
-          <ErrorBoundary key={activeTab}>{renderContent()}</ErrorBoundary>
-        </main>
-        {/* Sponsorlar yalnızca ana sayfada. Koyu biten sayfalarda kapanış bloğu da koyu: ani geçiş olmasın */}
-        <ErrorBoundary>
-          <Footer dark={activeTab === "aircraft" || activeTab === "media"} showSponsors={activeTab === "home"} />
-        </ErrorBoundary>
-      </div>
-    </NavContext.Provider>
+    <LangContext.Provider value={langValue}>
+      <NavContext.Provider value={navigate}>
+        <div className="relative flex min-h-screen w-full flex-col font-sans">
+          {/* Her bölüm ayrı sınırda: birindeki hata diğerlerini (ve tüm sayfayı) götürmez */}
+          <ErrorBoundary>
+            <Header activeTab={activeTab} onTabChange={navigate} />
+          </ErrorBoundary>
+          <main className="flex-grow">
+            <ErrorBoundary key={activeTab}>{renderContent()}</ErrorBoundary>
+          </main>
+          {/* Sponsorlar yalnızca ana sayfada. Koyu biten sayfalarda kapanış bloğu da koyu: ani geçiş olmasın */}
+          <ErrorBoundary>
+            <Footer dark={activeTab === "aircraft" || activeTab === "media"} showSponsors={activeTab === "home"} />
+          </ErrorBoundary>
+        </div>
+      </NavContext.Provider>
+    </LangContext.Provider>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { X, ArrowLeft, ArrowRight } from "lucide-react";
+import { useT } from "./i18n";
 
 export interface LightboxPhoto {
   src: string;
@@ -17,6 +18,7 @@ const getLenis = () => (window as unknown as { __lenis?: LenisLike }).__lenis;
  */
 export function useLightbox(photos: LightboxPhoto[], { captions = false }: { captions?: boolean } = {}) {
   const [index, setIndex] = useState<number | null>(null);
+  const t = useT();
   const close = useCallback(() => setIndex(null), []);
   const step = useCallback(
     (d: number) => setIndex((i) => (i === null ? i : (i + d + photos.length) % photos.length)),
@@ -65,7 +67,7 @@ export function useLightbox(photos: LightboxPhoto[], { captions = false }: { cap
       <button
         onClick={close}
         className="absolute top-4 right-4 md:top-6 md:right-6 w-12 h-12 flex items-center justify-center text-white hover:text-[#E02F3C] transition-colors"
-        aria-label="Kapat"
+        aria-label={t("Kapat", "Close")}
       >
         <X className="w-7 h-7" />
       </button>
@@ -77,7 +79,7 @@ export function useLightbox(photos: LightboxPhoto[], { captions = false }: { cap
               step(-1);
             }}
             className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-[#E02F3C] text-white transition-colors skew-x-[-10deg]"
-            aria-label="Önceki fotoğraf"
+            aria-label={t("Önceki fotoğraf", "Previous photo")}
           >
             <ArrowLeft className="w-5 h-5 skew-x-[10deg]" />
           </button>
@@ -87,7 +89,7 @@ export function useLightbox(photos: LightboxPhoto[], { captions = false }: { cap
               step(1);
             }}
             className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-[#E02F3C] text-white transition-colors skew-x-[-10deg]"
-            aria-label="Sonraki fotoğraf"
+            aria-label={t("Sonraki fotoğraf", "Next photo")}
           >
             <ArrowRight className="w-5 h-5 skew-x-[10deg]" />
           </button>

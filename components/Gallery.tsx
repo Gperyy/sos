@@ -1,5 +1,7 @@
 import React from "react";
 import { Instagram, ArrowUpRight } from "lucide-react";
+import { useLang, useT, pick } from "./ui";
+import type { Tx } from "./ui";
 
 const IG_URL = "https://www.instagram.com/semin.ozturk/";
 const IG_HANDLE = "@semin.ozturk";
@@ -7,15 +9,23 @@ const IG_HANDLE = "@semin.ozturk";
 // Instagram'daki seçili fotoğraf gönderileri (@semin.ozturk). Fotoğraflar: /public/images/instagram/<kod>.jpg
 // Karelere tıklayınca gönderi Instagram'da açılır. Güncellemek için: fotoğrafı klasöre koyup listeye ekleyin
 // (aspect = genişlik / yükseklik). Az ama büyük: masaüstünde 2×2, mobilde kaydırılan tek sıra; kırpma yok.
-const posts: { code: string; alt: string; aspect: number }[] = [
-  { code: "DXmEkpMDEJG", alt: "Dünya Pilotlar Günümüz Kutlu Olsun", aspect: 1461 / 1066 },
-  { code: "DVQRpfrjB-j", alt: "Dynon Avionics 2026 yılında Yeni Menekşe ile gökyüzünde", aspect: 980 / 1226 },
-  { code: "DOqpejdjK06", alt: "Kokpitten pist görünümü", aspect: 952 / 1269 },
-  { code: "DPq-TS_jJsi", alt: "Gökyüzünde dumandan kalp", aspect: 1255 / 952 },
+const posts: { code: string; alt: Tx; aspect: number }[] = [
+  { code: "DXmEkpMDEJG", alt: { tr: "Dünya Pilotlar Günümüz Kutlu Olsun", en: "Happy World Pilots' Day" }, aspect: 1461 / 1066 },
+  {
+    code: "DVQRpfrjB-j",
+    alt: { tr: "Dynon Avionics 2026 yılında Yeni Menekşe ile gökyüzünde", en: "Dynon Avionics in the sky with Yeni Menekşe in 2026" },
+    aspect: 980 / 1226,
+  },
+  { code: "DOqpejdjK06", alt: { tr: "Kokpitten pist görünümü", en: "View of the runway from the cockpit" }, aspect: 952 / 1269 },
+  { code: "DPq-TS_jJsi", alt: { tr: "Gökyüzünde dumandan kalp", en: "A smoke heart in the sky" }, aspect: 1255 / 952 },
 ];
 const rows = [posts.slice(0, 2), posts.slice(2, 4)];
 
-const PostLink: React.FC<{ p: (typeof posts)[number]; className?: string; style?: React.CSSProperties; delay?: number }> = ({ p, className = "", style, delay }) => (
+const PostLink: React.FC<{ p: (typeof posts)[number]; className?: string; style?: React.CSSProperties; delay?: number }> = ({ p, className = "", style, delay }) => {
+  const lang = useLang();
+  const t = useT();
+  const alt = pick(p.alt, lang);
+  return (
   <a
     href={`https://www.instagram.com/p/${p.code}/`}
     target="_blank"
@@ -24,16 +34,18 @@ const PostLink: React.FC<{ p: (typeof posts)[number]; className?: string; style?
     data-reveal-delay={delay ? String(delay) : undefined}
     style={style}
     className={`group relative block overflow-hidden bg-ink/5 ${className}`}
-    aria-label={`${p.alt} — Instagram'da gör`}
+    aria-label={`${alt} — ${t("Instagram'da gör", "view on Instagram")}`}
   >
-    <img src={`/images/instagram/${p.code}.jpg`} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
+    <img src={`/images/instagram/${p.code}.jpg`} alt={alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
     <div className="absolute inset-0 flex items-center justify-center bg-ink/0 group-hover:bg-ink/40 transition-colors">
       <Instagram className="w-8 h-8 text-paper opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   </a>
-);
+  );
+};
 
 const Gallery: React.FC = () => {
+  const t = useT();
   return (
     <section className="py-28 md:py-36 bg-paper">
       <div className="max-w-[1280px] mx-auto px-6 sm:px-9">
@@ -83,7 +95,7 @@ const Gallery: React.FC = () => {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-primary hover:bg-[#c91f2b] text-white px-8 py-4 text-[12px] tracking-[0.18em] uppercase font-semibold transition-colors"
           >
-            <Instagram className="w-4 h-4" /> Instagram'da Takip Et
+            <Instagram className="w-4 h-4" /> {t("Instagram'da Takip Et", "Follow on Instagram")}
           </a>
         </div>
       </div>

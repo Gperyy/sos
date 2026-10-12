@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useScrollProgress } from "./useScrollProgress";
 import { useLightbox } from "./Lightbox";
+import { useT } from "./i18n";
 import type { LightboxPhoto } from "./Lightbox";
 
 interface HorizontalGalleryProps {
@@ -21,6 +22,7 @@ const aligns = ["self-center", "self-start mt-[14svh]", "self-end mb-[16svh]", "
  * Fotoğrafa tıklayınca sayfa içi görüntüleyici açılır.
  */
 const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ photos, backdrop }) => {
+  const t = useT();
   const trackRef = useRef<HTMLDivElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -61,7 +63,7 @@ const HorizontalGallery: React.FC<HorizontalGalleryProps> = ({ photos, backdrop 
       className={`group relative flex-shrink-0 overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.5)] max-md:!h-auto ${heights[i % heights.length]} ${
         aligns[i % aligns.length]
       }`}
-      aria-label={`${ph.alt} — büyüt`}
+      aria-label={`${ph.alt} — ${t("büyüt", "enlarge")}`}
     >
       <img src={ph.src} alt={ph.alt} loading="lazy" className="h-full w-auto max-w-none max-md:h-auto max-md:max-h-[58svh] max-md:max-w-[84vw] block transition-transform duration-[1200ms] group-hover:scale-105" />
     </button>
