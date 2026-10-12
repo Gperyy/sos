@@ -17,7 +17,8 @@ interface Clipping {
   aspect: number;
 }
 
-// Dört satır, satırda 2 kupür — büyük ve küçük oranlar eşleştirildi, satır yükseklikleri birbirine yakın.
+// Satırda 2 (uzun kupürlerde 3) kupür — büyük ve küçük oranlar eşleştirildi, satır yükseklikleri birbirine yakın.
+// Eski sitenin Medya galerisindeki tüm kupürler; Elle Dergi kupürü Hakkında'daki Pernigotti görseliyle aynı olduğu için yok.
 const C = {
   sozcu: { source: "Sözcü", title: "Gökyüzünün Kraliçesi", titleEn: "Queen of the Skies", image: "/images/basin/sozcu-gokyuzunun-kralicesi.png", aspect: 929 / 485 },
   milliyet: { source: "Milliyet", title: "Göklerin Sultanı", titleEn: "Sultan of the Skies", image: "/images/basin/milliyet.png", aspect: 929 / 1498 },
@@ -27,12 +28,32 @@ const C = {
   ecns: { source: "ECNS", title: "First female pilot", image: "/images/basin/ecns-first-female-pilot.png", aspect: 929 / 829 },
   telegraph2: { source: "Telegraph", image: "/images/basin/telegraph-2.png", aspect: 929 / 649 },
   ant: { source: "Air News Times", title: "Semin Öztürk: Havacılık Aşkına Tutuldum", titleEn: "Semin Öztürk: I Fell in Love with Aviation", image: "/images/basin/air-news-times.png", aspect: 930 / 749 },
+  star: { source: "Star", title: "Göklerin Kraliçesi Hayaline Kavuşuyor", titleEn: "The Queen of the Skies Achieves Her Dream", image: "/images/basin/star-goklerin-kralicesi.jpg", aspect: 930 / 592 },
+  kelebek: { source: "Hürriyet Kelebek", title: "Türk Akrobasi Pilotunun Ünü Sınırları Aştı", titleEn: "Turkish Aerobatic Pilot's Fame Crosses Borders", image: "/images/basin/hurriyet-kelebek.jpg", aspect: 930 / 1180 },
+  harbi: { source: "Gazete Harbi", title: "Türk Kadın Akrobasi Pilotundan Özel Gösteri", titleEn: "Special Display by a Turkish Woman Aerobatic Pilot", image: "/images/basin/harbi-ozel-gosteri.jpg", aspect: 930 / 611 },
+  yenigun: { source: "Eskişehir Yenigün", title: "Pilot Öztürk Külliye'ye Davetli", titleEn: "Pilot Öztürk Invited to the Presidential Complex", image: "/images/basin/yenigun-kulliyeye-davetli.jpg", aspect: 930 / 1150 },
+  haberturk: { source: "Habertürk", title: "Türkiye'nin İlk Kadın Akrobasi Pilotu", titleEn: "Türkiye's First Female Aerobatic Pilot", image: "/images/basin/haberturk-ilk-kadin-akrobasi-pilotu.jpg", aspect: 930 / 690 },
+  zafer: { source: "Zafer", title: "Eskişehir Semalarında Akrobasi Gösterisi", titleEn: "Aerobatic Display over Eskişehir", image: "/images/basin/zafer-eskisehir-semalarinda.jpg", aspect: 930 / 891 },
+  eylul: { source: "2 Eylül", title: "Şehitlerimiz İçin Uçtu", titleEn: "She Flew for Our Martyrs", image: "/images/basin/2-eylul-sehitlerimiz-icin-uctu.jpg", aspect: 930 / 800 },
+  airturk: { source: "AirTürk Haber", title: "ACT Havayolları Semin Öztürk Şener'e Sponsor Oldu", titleEn: "ACT Airlines Becomes Semin Öztürk Şener's Sponsor", image: "/images/basin/airturk-haber-act-sponsor.jpg", aspect: 930 / 978 },
+  aa: { source: "Anadolu Ajansı", title: "Kadın Akrobasi Pilotu Semin Öztürk Şener, İzmir'de Prova Yaptı", titleEn: "Woman Aerobatic Pilot Semin Öztürk Şener Rehearses in Izmir", image: "/images/basin/aa-izmir-prova.jpg", aspect: 930 / 1200 },
+  glober: { source: "Glober", title: "Kadınlar Asla Vazgeçmiyor", titleEn: "Women Never Give Up", image: "/images/basin/glober-kadinlar-asla-vazgecmiyor.jpg", aspect: 930 / 1000 },
+  ekonomi: { source: "Ekonomi", title: "Türkiye'nin İlk Kadın Sivil Helikopter Pilotu Oldu", titleEn: "She Became Türkiye's First Civilian Female Helicopter Pilot", image: "/images/basin/ekonomi-ilk-kadin-helikopter-pilotu.jpg", aspect: 943 / 977 },
+  airport: { source: "Airport Haber", title: "Semin Öztürk Şener Airshow'un Son Gününde İzleyenleri Mest Etti", titleEn: "Semin Öztürk Şener Dazzles the Crowd on the Airshow's Final Day", image: "/images/basin/airport-haber-istanbul-airshow.jpg", aspect: 930 / 1349 },
+  anadolu: { source: "Eskişehir Anadolu", title: "“Hiçbir Zaman ‘Ben Oldum’ Dememeli”", titleEn: "“One Should Never Say ‘I've Made It’”", image: "/images/basin/anadolu-hicbir-zaman-ben-oldum-dememeli.jpg", aspect: 930 / 1393 },
+  cumhuriyet: { source: "Cumhuriyet", title: "Kadın Akrobasi Pilotu Şener'den Özel Gösteri", titleEn: "Special Display by Woman Aerobatic Pilot Şener", image: "/images/basin/cumhuriyet-ozel-gosteri.jpg", aspect: 930 / 1370 },
 } satisfies Record<string, Clipping>;
 const pressRows: Clipping[][] = [
   [C.sozcu, C.milliyet],
   [C.telegraph1, C.aksam],
   [C.guardian, C.ecns],
   [C.ant, C.telegraph2],
+  [C.star, C.kelebek],
+  [C.harbi, C.yenigun],
+  [C.haberturk, C.zafer],
+  [C.eylul, C.airturk],
+  [C.aa, C.glober, C.ekonomi],
+  [C.airport, C.anadolu, C.cumhuriyet],
 ];
 const pressPhotos = (lang: Lang) =>
   pressRows.flat().map((c) => {
@@ -60,7 +81,7 @@ const PressClippings: React.FC = () => {
                   key={c.image}
                   onClick={() => open(i)}
                   data-reveal-img
-                  data-reveal-delay={String((i % 2) + 1)}
+                  data-reveal-delay={String((i % 3) + 1)}
                   style={{ flex: `${c.aspect} 1 0%` }}
                   className="group block overflow-hidden bg-white"
                   aria-label={`${photos[i].alt} — ${t("büyüt", "enlarge")}`}
@@ -78,22 +99,29 @@ const PressClippings: React.FC = () => {
 };
 
 // Fotoğraflar eski sitenin galerisinden: /public/images/galeri
+// Sitenin başka yerinde (Hakkında, Kariyer, Uçak) zaten kullanılan fotoğraflar burada tekrar edilmez.
 const galleryPhotos: { src: string; alt: Tx }[] = [
+  // Her grubun ilki büyük kare — yüksek çözünürlüklüler orada; küçük görseller küçük karelerde
   { src: "/images/galeri/01-izmir-airshow.jpg", alt: { tr: "İzmir Körfezi'nde gösteri", en: "Air show over the Gulf of Izmir" } },
   { src: "/images/galeri/02-cumhuriyet-fotografi.jpg", alt: { tr: "Cumhuriyet fotoğrafı — ay yıldız", en: "Republic Day photo — crescent and star" } },
-  { src: "/images/galeri/03-yeni-menekse.jpg", alt: { tr: "Yeni Menekşe", en: "The New Violet" } },
-  { src: "/images/galeri/04-muze-duvari.jpg", alt: { tr: "Müze duvarındaki akrobasi fotoğrafı", en: "Aerobatics photo on the museum wall" } },
   { src: "/images/galeri/05-airact.jpg", alt: { tr: "AirACT logolu uçak", en: "Aircraft with the AirACT logo" } },
   { src: "/images/galeri/06-seyirciler-arasinda.jpg", alt: { tr: "Semin seyirciler arasında", en: "Semin among the spectators" } },
+  { src: "/images/galeri/24-ters-ucus.jpg", alt: { tr: "Ters uçuşta", en: "Flying inverted" } },
+  { src: "/images/galeri/16-pistte-yansima.jpg", alt: { tr: "Semin ve uçağı ıslak pistte", en: "Semin and her aircraft on the wet runway" } },
   { src: "/images/galeri/07-gosteri-alani.jpg", alt: { tr: "Gösteri alanında Yeni Menekşe", en: "The New Violet at the show grounds" } },
   { src: "/images/galeri/08-tutima-academy-ilk-ucus.jpg", alt: { tr: "Tutima Academy'de ilk uçuş", en: "First flight at Tutima Academy" } },
+  { src: "/images/galeri/23-kokpitte.jpg", alt: { tr: "Kokpitte, dikey tırmanışta", en: "In the cockpit during a vertical climb" } },
+  { src: "/images/galeri/17-gokyuzunde-semin.jpg", alt: { tr: "Yeni Menekşe gökyüzünde", en: "The New Violet in the sky" } },
   { src: "/images/galeri/09-ustten-gorunum.jpg", alt: { tr: "Semin'in uçağı üstten", en: "Semin's aircraft from above" } },
   { src: "/images/galeri/10-piper-cub.jpg", alt: { tr: "Piper Cub uçağı", en: "Piper Cub aircraft" } },
   { src: "/images/galeri/11-cekim.jpg", alt: { tr: "Reklam çekimi", en: "Commercial shoot" } },
-  { src: "/images/galeri/12-helikopter.jpg", alt: { tr: "Helikopter ile", en: "With a helicopter" } },
-  { src: "/images/galeri/13-pitts-duman.jpg", alt: { tr: "Pitts duman izleriyle", en: "Pitts with smoke trails" } },
+  { src: "/images/galeri/18-kanat-ve-duman.jpg", alt: { tr: "Kanattan duman izi", en: "Smoke trail seen from the wing" } },
+  { src: "/images/galeri/20-siyah-beyaz.jpg", alt: { tr: "Uçağıyla siyah beyaz portre", en: "Black-and-white portrait with her aircraft" } },
+  { src: "/images/galeri/19-kuyruktan-kokpit.jpg", alt: { tr: "Kuyruk kamerasından kokpit", en: "The cockpit seen from the tail camera" } },
   { src: "/images/galeri/14-kanat-ustu.jpg", alt: { tr: "Kanat üstünden uçuş", en: "Flight seen from above the wing" } },
-  { src: "/images/galeri/15-drone-ustten.jpg", alt: { tr: "Drone ile üstten çekim", en: "Aerial drone shot" } },
+  { src: "/images/galeri/21-boeing-stearman.jpg", alt: { tr: "Boeing Stearman pistte", en: "Boeing Stearman on the runway" } },
+  { src: "/images/galeri/22-tirmanis.jpg", alt: { tr: "Boeing Stearman gökyüzünde", en: "Boeing Stearman in flight" } },
+  { src: "/images/galeri/25-duman-izi.jpg", alt: { tr: "Duman iziyle tırmanış", en: "Climbing with a smoke trail" } },
 ];
 
 // Mozaik: 5'li gruplar — her grupta 1 büyük + 4 küçük kare, büyük kare sırayla sol/sağ

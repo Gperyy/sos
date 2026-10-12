@@ -152,11 +152,18 @@ export const events: EventData[] = [
     },
   },
   {
-    id: "ataturke-saygi-ucusu-2026",
+    id: "ataya-saygi-ucusu-2026",
     date: "2026-11-10",
-    title: "Atatürk'e Saygı Uçuşu",
+    time: "09:05",
+    title: "Ata'ya Saygı Uçuşu",
     location: "Sivrihisar Havacılık Merkezi",
-    en: { title: "Flight of Respect to Atatürk", location: "Sivrihisar Aviation Center" },
+    description: "Atatürk'ü saygı ve özlemle anıyoruz.",
+    poster: "/images/afisler/2026-11-10-ataya-saygi-ucusu.jpg",
+    en: {
+      title: "Flight of Respect to Atatürk",
+      location: "Sivrihisar Aviation Center",
+      description: "We commemorate Atatürk with respect and longing.",
+    },
   },
 ];
 
