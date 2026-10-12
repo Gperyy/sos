@@ -12,7 +12,7 @@ import Events from "./components/Events";
 import Media from "./components/Media";
 import FlyWithSemin from "./components/FlyWithSemin";
 import Contact from "./components/Contact";
-import { NavContext } from "./components/ui";
+import { NavContext, ErrorBoundary } from "./components/ui";
 import type { TabType } from "./components/ui";
 
 // Her sekmenin kendi adresi: yenileyince aynı sayfa açılır, geri/ileri tuşları sekmeler arasında çalışır.
@@ -141,12 +141,19 @@ const App: React.FC = () => {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.6,
-    });
+    // Lenis kurulamazsa (eski tarayıcı vb.) normal kaydırmayla devam: site çalışmaya devam etsin
+    let lenis: Lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 1.6,
+      });
+    } catch (err) {
+      console.error("[Lenis]", err);
+      return;
+    }
 
     (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
 
@@ -281,12 +288,17 @@ const App: React.FC = () => {
   return (
     <NavContext.Provider value={navigate}>
       <div className="relative flex min-h-screen w-full flex-col font-sans">
-        <Header activeTab={activeTab} onTabChange={navigate} />
+        {/* Her bölüm ayrı sınırda: birindeki hata diğerlerini (ve tüm sayfayı) götürmez */}
+        <ErrorBoundary>
+          <Header activeTab={activeTab} onTabChange={navigate} />
+        </ErrorBoundary>
         <main className="flex-grow">
-          {renderContent()}
+          <ErrorBoundary key={activeTab}>{renderContent()}</ErrorBoundary>
         </main>
         {/* Sponsorlar yalnızca ana sayfada. Koyu biten sayfalarda kapanış bloğu da koyu: ani geçiş olmasın */}
-        <Footer dark={activeTab === "aircraft" || activeTab === "media"} showSponsors={activeTab === "home"} />
+        <ErrorBoundary>
+          <Footer dark={activeTab === "aircraft" || activeTab === "media"} showSponsors={activeTab === "home"} />
+        </ErrorBoundary>
       </div>
     </NavContext.Provider>
   );

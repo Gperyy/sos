@@ -11,76 +11,16 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Font sayfayı bekletmesin: yavaş ağda önce yedek font, Lexend gelince değişir -->
     <link
       href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              primary: "#E02F3C",
-              "background-light": "#f4f1ec",
-              "background-dark": "#0b0b0d",
-              "surface-dark": "#0b0b0d",
-              ink: "#0b0b0d",
-              paper: "#f4f1ec",
-            },
-            fontFamily: {
-              display: ["Lexend", "sans-serif"],
-              sans: ["Lexend", "sans-serif"],
-            },
-            animation: {
-              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              "fade-in-up": "fadeInUp 0.6s ease-out forwards",
-              "fade-in-down": "fadeInDown 0.6s ease-out forwards",
-              "fade-in": "fadeIn 0.5s ease-out forwards",
-              "slide-in-right": "slideInRight 0.3s ease-out forwards",
-              "slide-in-left": "slideInLeft 0.3s ease-out forwards",
-              shimmer: "shimmer 1.5s infinite",
-              "scale-in": "scaleIn 0.3s ease-out forwards",
-              float: "float 3s ease-in-out infinite",
-            },
-            keyframes: {
-              fadeInUp: {
-                "0%": { opacity: "0", transform: "translateY(30px)" },
-                "100%": { opacity: "1", transform: "translateY(0)" },
-              },
-              fadeInDown: {
-                "0%": { opacity: "0", transform: "translateY(-30px)" },
-                "100%": { opacity: "1", transform: "translateY(0)" },
-              },
-              fadeIn: {
-                "0%": { opacity: "0" },
-                "100%": { opacity: "1" },
-              },
-              slideInRight: {
-                "0%": { opacity: "0", transform: "translateX(30px)" },
-                "100%": { opacity: "1", transform: "translateX(0)" },
-              },
-              slideInLeft: {
-                "0%": { opacity: "0", transform: "translateX(-30px)" },
-                "100%": { opacity: "1", transform: "translateX(0)" },
-              },
-              shimmer: {
-                "0%": { transform: "translateX(-100%)" },
-                "100%": { transform: "translateX(100%)" },
-              },
-              scaleIn: {
-                "0%": { opacity: "0", transform: "scale(0.9)" },
-                "100%": { opacity: "1", transform: "scale(1)" },
-              },
-              float: {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-10px)" },
-              },
-            },
-          },
-        },
-      };
-    </script>
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    </noscript>
     <style>
       body {
         font-family: "Lexend", sans-serif;
@@ -224,6 +164,36 @@
   </head>
   <body class="bg-paper text-ink overflow-x-hidden">
     <div id="root"></div>
+    <!--
+      Açılış bekçisi: JS paketi yüklenemez ya da çalışamazsa (deploy sonrası eski önbellek, ağ kesintisi,
+      desteklenmeyen tarayıcı) sayfa bembeyaz kalmasın. Bir kez yenilemeyi dener; olmazsa kısa bir mesaj gösterir.
+      Bilerek eski usul JS: en eski tarayıcılarda da çalışmalı.
+    -->
+    <script>
+      (function () {
+        var KEY = "boot-retry";
+        var root = document.getElementById("root");
+        function get() { try { return Number(sessionStorage.getItem(KEY)) || 0; } catch (e) { return -1; } }
+        function set(v) { try { v ? sessionStorage.setItem(KEY, v) : sessionStorage.removeItem(KEY); } catch (e) {} }
+        function show() {
+          root.innerHTML =
+            '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font-family:sans-serif;color:#0b0b0d">' +
+            '<p style="font-size:18px;font-weight:700;margin:0">Sayfa yüklenemedi.</p>' +
+            '<p style="margin:0;opacity:.7">Bağlantınızı kontrol edip sayfayı yenileyin. Sorun sürerse tarayıcınızı güncelleyin.</p>' +
+            '<button type="button" onclick="location.reload()" style="background:#E02F3C;color:#fff;border:0;padding:12px 24px;font-weight:700;text-transform:uppercase">Yenile</button>' +
+            "</div>";
+        }
+        function check() {
+          if (root.childElementCount) return set(0);
+          var last = get();
+          // Son 30 sn içinde zaten yenilediysek (ya da sessionStorage yoksa) döngüye girme, mesajı göster
+          if (last === -1 || Date.now() - last < 30000) return show();
+          set(String(Date.now()));
+          location.reload();
+        }
+        document.addEventListener("DOMContentLoaded", function () { setTimeout(check, 4000); });
+      })();
+    </script>
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>

@@ -1,14 +1,13 @@
 {
   "name": "sos",
   "compatibility_date": "2026-01-27",
+  // Yalnızca aşağıdaki yollar Worker'dan geçer (eksik JS paketine 404, videolara Range desteği);
+  // geri kalan her şey doğrudan statik dosya olarak sunulur.
+  "main": "./worker/index.ts",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "single-page-application"
-  },
-  "kv_namespaces": [
-    {
-      "binding": "SOS_DATA",
-      "id": "YOUR_KV_NAMESPACE_ID"
-    }
-  ]
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/assets/*", "/videos/*"]
+  }
 }
