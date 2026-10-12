@@ -101,6 +101,10 @@ const PressClippings: React.FC = () => {
 // Fotoğraflar eski sitenin galerisinden: /public/images/galeri
 // Sitenin başka yerinde (Hakkında, Kariyer, Uçak) zaten kullanılan fotoğraflar burada tekrar edilmez.
 const galleryPhotos: { src: string; aspect: number; alt: Tx }[] = [
+  { src: "/images/galeri/26-duman-ilmegi.jpg", aspect: 1600 / 1600, alt: { tr: "Duman ilmeği içinde tırmanış", en: "Climbing through a smoke loop" } },
+  { src: "/images/galeri/27-bulutlarin-onunde.jpg", aspect: 1440 / 1440, alt: { tr: "Yeni Menekşe bulutların önünde", en: "The New Violet against the clouds" } },
+  { src: "/images/galeri/28-bicak-sirti.jpg", aspect: 1080 / 1350, alt: { tr: "Yeni Menekşe bıçak sırtı uçuşta", en: "The New Violet in knife-edge flight" } },
+  { src: "/images/galeri/29-kokpitten-selam.jpg", aspect: 1420 / 1600, alt: { tr: "Semin kokpitten selam veriyor", en: "Semin waving from the cockpit" } },
   { src: "/images/galeri/01-izmir-airshow.jpg", aspect: 1198 / 960, alt: { tr: "İzmir Körfezi'nde gösteri", en: "Air show over the Gulf of Izmir" } },
   { src: "/images/galeri/02-cumhuriyet-fotografi.jpg", aspect: 1000 / 694, alt: { tr: "Cumhuriyet fotoğrafı — ay yıldız", en: "Republic Day photo — crescent and star" } },
   { src: "/images/galeri/05-airact.jpg", aspect: 1440 / 810, alt: { tr: "AirACT logolu uçak", en: "Aircraft with the AirACT logo" } },
