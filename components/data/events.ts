@@ -58,6 +58,7 @@ export const events: EventData[] = [
   {
     id: "fly-inn-sempozyum-2026",
     date: "2026-04-25",
+    endDate: "2026-04-26",
     title: "Fly-Inn / Amatör, Sportif ve Kültürel Havacılık Sempozyumu",
     location: "Sivrihisar Havacılık Merkezi",
     description: "Dünya Pilotlar Günü kutlaması. Program içinde Semin Öztürk Şener akrobasi gösterisi.",
@@ -97,7 +98,7 @@ export const events: EventData[] = [
       description: "Planes, helicopters, boats and cars — a gathering for model enthusiasts.",
     },
   },
-  { id: "kulup-balosu-2026", date: "2026-06-27", title: "Kulüp Balosu", location: "Sivrihisar", en: { title: "Sivrihisar Aviation Club Ball" } },
+  { id: "kulup-balosu-2026", date: "2026-07-11", title: "Kulüp Balosu", location: "Sivrihisar", en: { title: "Sivrihisar Aviation Club Ball" } },
   {
     id: "ucmayan-koy-kalmasin-2026",
     date: "2026-06-28",
@@ -119,7 +120,8 @@ export const events: EventData[] = [
     endDate: "2026-08-30",
     title: "Zafer Bayramı & Havacılık Haftası",
     location: "Sivrihisar",
-    en: { title: "Victory Day & Aviation Week Celebration" },
+    description: "Uçurtma Şenliği.",
+    en: { title: "Victory Day & Aviation Week Celebration", description: "Kite Festival." },
   },
   {
     id: "shg-airshow-2026",
@@ -148,6 +150,13 @@ export const events: EventData[] = [
       location: "Sivrihisar Aviation Center",
       description: "As every year, we celebrate Republic Day with a giant crescent and star photographed from the sky.",
     },
+  },
+  {
+    id: "ataturke-saygi-ucusu-2026",
+    date: "2026-11-10",
+    title: "Atatürk'e Saygı Uçuşu",
+    location: "Sivrihisar Havacılık Merkezi",
+    en: { title: "Flight of Respect to Atatürk", location: "Sivrihisar Aviation Center" },
   },
 ];
 
