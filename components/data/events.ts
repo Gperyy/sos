@@ -36,7 +36,7 @@ export const events: EventData[] = [
     description: "Tüm hanım misafirlerimize ücretsiz uçuş şansı.",
     poster: "/images/afisler/2026-03-08-kadin-ve-dunya-havaciligi.jpg",
     en: {
-      title: "Women in World Aviation Symposium",
+      title: "Women and World Aviation Symposium",
       location: "Sivrihisar Aviation Center",
       description: "A free flight opportunity for all our women guests.",
     },
@@ -50,7 +50,7 @@ export const events: EventData[] = [
     description: "Geleneksel kağıt uçak yarışması ve 5–15 yaş arası tüm çocuklara ücretsiz uçuş şansı.",
     poster: "/images/afisler/2026-04-19-havaci-cocuklar.jpg",
     en: {
-      title: "Young Aviators Day",
+      title: "Aviator Kids Event",
       location: "Sivrihisar Aviation Center",
       description: "The traditional paper plane contest, plus a free flight opportunity for every child aged 5–15.",
     },
@@ -77,7 +77,7 @@ export const events: EventData[] = [
     description: "19 Mayıs'ı uçarak kutluyoruz. Tüm gençlere ücretsiz uçuş şansı.",
     poster: "/images/afisler/2026-05-17-ucan-genclik.jpg",
     en: {
-      title: "Flying Youth Day",
+      title: "Flying Youth Event",
       location: "Sivrihisar Aviation Center",
       description: "Celebrating May 19, Youth and Sports Day, in the air — with a free flight opportunity for every young person.",
     },
@@ -97,22 +97,29 @@ export const events: EventData[] = [
       description: "Planes, helicopters, boats and cars — a gathering for model enthusiasts.",
     },
   },
-  { id: "kulup-balosu-2026", date: "2026-06-27", title: "Kulüp Balosu", location: "Sivrihisar", en: { title: "Club Ball" } },
+  { id: "kulup-balosu-2026", date: "2026-06-27", title: "Kulüp Balosu", location: "Sivrihisar", en: { title: "Sivrihisar Aviation Club Ball" } },
   {
     id: "ucmayan-koy-kalmasin-2026",
     date: "2026-06-28",
     title: "Uçmayan Köy Kalmasın",
     location: "Sivrihisar",
-    en: { title: "Every Village Takes Flight" },
+    en: { title: "Flying Villages" },
   },
-  { id: "asinfura-2-2026", date: "2026-08-17", endDate: "2026-08-23", title: "ASINFURA 2", location: "Sivrihisar" },
+  {
+    id: "asinfura-2-2026",
+    date: "2026-08-17",
+    endDate: "2026-08-23",
+    title: "ASINFURA 2",
+    location: "Sivrihisar",
+    en: { title: "ASINFURA 2 — Asiatic International Fun Rally" },
+  },
   {
     id: "zafer-bayrami-2026",
     date: "2026-08-29",
     endDate: "2026-08-30",
     title: "Zafer Bayramı & Havacılık Haftası",
     location: "Sivrihisar",
-    en: { title: "Victory Day & Aviation Week" },
+    en: { title: "Victory Day & Aviation Week Celebration" },
   },
   {
     id: "shg-airshow-2026",
@@ -125,7 +132,6 @@ export const events: EventData[] = [
     website: "https://shgairshow.com",
     poster: "/images/afisler/2026-09-19-shg-airshow.jpg",
     en: {
-      location: "Sivrihisar Airshows",
       description: "Türkiye's biggest airshow. Thousands of spectators, dozens of pilots and an unforgettable stage.",
     },
   },
@@ -138,7 +144,7 @@ export const events: EventData[] = [
     description: "Cumhuriyet Bayramı'nı her yıl olduğu gibi gökyüzünden görünen dev bir ay-yıldız fotoğrafıyla kutluyoruz.",
     poster: "/images/afisler/2026-10-25-cumhuriyet-fotografi.jpg",
     en: {
-      title: "Traditional Republic Day Photo",
+      title: "Traditional Republic Photo",
       location: "Sivrihisar Aviation Center",
       description: "As every year, we celebrate Republic Day with a giant crescent and star photographed from the sky.",
     },
