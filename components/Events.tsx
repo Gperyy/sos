@@ -1,26 +1,29 @@
 import React from "react";
 import { ExternalLink, MapPin, Clock } from "lucide-react";
 import { useLang, useT } from "./ui";
+import { useLightbox } from "./ui/Lightbox";
 import { splitEvents, formatDate, localizeEvent } from "./data/events";
 import type { EventData } from "./data/events";
 
 // Etkinlik Takvimi — ŞU ANKİ düzen + MAYIS font (Lexend) & renk/buton (kırmızı skew/glow).
 // Veriler: components/data/events.ts (yaklaşan/geçmiş tarihe göre otomatik ayrılır).
 
-// Afiş varsa kendi oranında, kırpılmadan; tıklayınca tam boy açılır
+// Afiş varsa kendi oranında, kırpılmadan; tıklayınca sayfa içinde büyütülür (yeni sekme açılmaz)
 const PosterFrame: React.FC<{ poster?: string; alt: string; className?: string }> = ({ poster, alt, className = "" }) => {
   const t = useT();
+  const posterAlt = t(`${alt} afişi`, `${alt} poster`);
+  const { open, lightbox } = useLightbox(poster ? [{ src: poster, alt: posterAlt }] : [], { captions: false });
   return poster ? (
     <div data-reveal-img className={`overflow-hidden border border-black/10 ${className}`}>
-      <a
-        href={poster}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={t(`${alt} afişini tam boy aç`, `Open the ${alt} poster in full size`)}
-        className="block"
+      <button
+        type="button"
+        onClick={() => open(0)}
+        aria-label={t(`${alt} afişini büyüt`, `Enlarge the ${alt} poster`)}
+        className="block w-full"
       >
-        <img src={poster} alt={t(`${alt} afişi`, `${alt} poster`)} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
-      </a>
+        <img src={poster} alt={posterAlt} className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" loading="lazy" />
+      </button>
+      {lightbox}
     </div>
   ) : (
     <div data-reveal-img className={`relative aspect-[3/4] overflow-hidden bg-black/5 border border-black/10 ${className}`}>

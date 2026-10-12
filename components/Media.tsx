@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { useLightbox } from "./ui/Lightbox";
 import { useLang, useT, pick } from "./ui";
@@ -123,31 +123,77 @@ const galleryPhotos: { src: string; aspect: number; alt: Tx }[] = [
   { src: "/images/galeri/25-duman-izi.jpg", aspect: 486 / 376, alt: { tr: "Duman iziyle tırmanış", en: "Climbing with a smoke trail" } },
 ];
 
-// Fotoğraflar kırpılmadan, kendi oranlarında: her satırdaki fotoğraflar aynı yükseklikte, satırı tam doldurur.
-// Yöntem: her öğenin hem flex-basis'i hem flex-grow'u oranıyla orantılı → satırda kalan boşluk
-// oranlara göre paylaşılır, böylece yükseklikler eşit kalır. Sondaki görünmez dolgu son satırı germez.
+// Fotoğraflar kırpılmadan, kendi oranlarında; her satır tam genişlikte ve satırdaki fotoğraflar aynı yükseklikte.
+// Satırlara bölme genişliğe göre hesaplanır (en iyi bölme): her satırın yüksekliği hedefe olabildiğince yakın
+// tutulur, böylece son satır da dahil hiçbir satırda boşluk kalmaz. Satır içinde flex-grow = oran → eşit yükseklik.
 type GalleryPhoto = { src: string; alt: string; aspect: number };
+
+function splitRows(aspects: number[], width: number, target: number, gap: number): number[][] {
+  const n = aspects.length;
+  // best[i]: ilk i fotoğrafın en düşük maliyetli bölmesi; cut[i]: son satırın başladığı yer
+  const best = new Array<number>(n + 1).fill(Infinity);
+  const cut = new Array<number>(n + 1).fill(0);
+  best[0] = 0;
+  for (let i = 1; i <= n; i++) {
+    let sum = 0;
+    for (let j = i - 1; j >= 0 && i - j <= 5; j--) {
+      sum += aspects[j];
+      const h = (width - gap * (i - j - 1)) / sum;
+      const cost = best[j] + ((h - target) / target) ** 2;
+      if (cost < best[i]) {
+        best[i] = cost;
+        cut[i] = j;
+      }
+    }
+  }
+  const rows: number[][] = [];
+  for (let i = n; i > 0; i = cut[i]) rows.unshift(Array.from({ length: i - cut[i] }, (_, k) => cut[i] + k));
+  return rows;
+}
+
 const PhotoGrid: React.FC<{ photos: GalleryPhoto[] }> = ({ photos }) => {
   const t = useT();
   const { open, lightbox } = useLightbox(photos, { captions: false });
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setWidth(el.clientWidth));
+    ro.observe(el);
+    setWidth(el.clientWidth);
+    return () => ro.disconnect();
+  }, []);
+
+  const mobile = width < 640;
+  const gap = mobile ? 8 : 12;
+  // Genişlik ölçülene kadar (ilk çizim) her fotoğraf kendi satırında
+  const rows = width ? splitRows(photos.map((p) => p.aspect), width, mobile ? 150 : width < 1024 ? 220 : 280, gap) : photos.map((_, i) => [i]);
+
   return (
     <>
-      <div className="flex flex-wrap gap-2 md:gap-3 mb-20 [--row:120px] sm:[--row:180px] md:[--row:240px]">
-        {photos.map((p, i) => (
-          <button
-            key={p.src}
-            onClick={() => open(i)}
-            data-reveal-img
-            data-reveal-delay={String((i % 4) + 1)}
-            style={{ flex: `${p.aspect} 1 calc(var(--row) * ${p.aspect})` }}
-            className="group relative overflow-hidden bg-white/5"
-            aria-label={`${p.alt} — ${t("büyüt", "enlarge")}`}
-          >
-            <img src={p.src} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
-            <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></span>
-          </button>
+      <div ref={ref} className="flex flex-col mb-20" style={{ gap }}>
+        {rows.map((row) => (
+          <div key={row[0]} className="flex" style={{ gap }}>
+            {row.map((i) => {
+              const p = photos[i];
+              return (
+                <button
+                  key={p.src}
+                  onClick={() => open(i)}
+                  data-reveal-img
+                  data-reveal-delay={String((i % 4) + 1)}
+                  style={{ flex: `${p.aspect} 1 0%` }}
+                  className="group relative overflow-hidden bg-white/5"
+                  aria-label={`${p.alt} — ${t("büyüt", "enlarge")}`}
+                >
+                  <img src={p.src} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
+                  <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></span>
+                </button>
+              );
+            })}
+          </div>
         ))}
-        <span aria-hidden="true" style={{ flex: "1000 1 0%" }}></span>
       </div>
       {lightbox}
     </>

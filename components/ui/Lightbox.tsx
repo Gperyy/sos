@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, ArrowLeft, ArrowRight } from "lucide-react";
 import { useT } from "./i18n";
 
@@ -98,5 +99,6 @@ export function useLightbox(photos: LightboxPhoto[], { captions = false }: { cap
     </div>
   ) : null;
 
-  return { open: setIndex as (i: number) => void, lightbox };
+  // body'ye taşınır: dönüşüm/kırpma uygulanan bir kapsayıcının içinde kullanılsa da tam ekran açılır
+  return { open: setIndex as (i: number) => void, lightbox: lightbox && createPortal(lightbox, document.body) };
 }

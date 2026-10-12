@@ -170,10 +170,16 @@ const Aircraft: React.FC = () => {
             </div>
           </div>
 
-          {/* İki geniş uçuş karesi yan yana */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-            <FramedPhoto {...yeniPhotos[2]} onOpen={() => yeni.open(2)} />
-            <FramedPhoto {...yeniPhotos[3]} onOpen={() => yeni.open(3)} flip />
+          {/* İki geniş uçuş karesi yan yana — oranları farklı; genişlikler orana göre paylaşılır, böylece
+              ikisi de kırpılmadan aynı yükseklikte durur (çerçeveler de eşit) */}
+          <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10">
+            {/* flex-grow = genişlik / yükseklik (958/522 ve 960/462) */}
+            <div className="md:[flex:1.835_1_0%]">
+              <FramedPhoto {...yeniPhotos[2]} onOpen={() => yeni.open(2)} />
+            </div>
+            <div className="md:[flex:2.078_1_0%]">
+              <FramedPhoto {...yeniPhotos[3]} onOpen={() => yeni.open(3)} flip />
+            </div>
           </div>
         </div>
         {yeni.lightbox}
