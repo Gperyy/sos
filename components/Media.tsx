@@ -100,59 +100,54 @@ const PressClippings: React.FC = () => {
 
 // Fotoğraflar eski sitenin galerisinden: /public/images/galeri
 // Sitenin başka yerinde (Hakkında, Kariyer, Uçak) zaten kullanılan fotoğraflar burada tekrar edilmez.
-const galleryPhotos: { src: string; alt: Tx }[] = [
-  // Her grubun ilki büyük kare — yüksek çözünürlüklüler orada; küçük görseller küçük karelerde
-  { src: "/images/galeri/01-izmir-airshow.jpg", alt: { tr: "İzmir Körfezi'nde gösteri", en: "Air show over the Gulf of Izmir" } },
-  { src: "/images/galeri/02-cumhuriyet-fotografi.jpg", alt: { tr: "Cumhuriyet fotoğrafı — ay yıldız", en: "Republic Day photo — crescent and star" } },
-  { src: "/images/galeri/05-airact.jpg", alt: { tr: "AirACT logolu uçak", en: "Aircraft with the AirACT logo" } },
-  { src: "/images/galeri/06-seyirciler-arasinda.jpg", alt: { tr: "Semin seyirciler arasında", en: "Semin among the spectators" } },
-  { src: "/images/galeri/24-ters-ucus.jpg", alt: { tr: "Ters uçuşta", en: "Flying inverted" } },
-  { src: "/images/galeri/16-pistte-yansima.jpg", alt: { tr: "Semin ve uçağı ıslak pistte", en: "Semin and her aircraft on the wet runway" } },
-  { src: "/images/galeri/07-gosteri-alani.jpg", alt: { tr: "Gösteri alanında Yeni Menekşe", en: "The New Violet at the show grounds" } },
-  { src: "/images/galeri/08-tutima-academy-ilk-ucus.jpg", alt: { tr: "Tutima Academy'de ilk uçuş", en: "First flight at Tutima Academy" } },
-  { src: "/images/galeri/23-kokpitte.jpg", alt: { tr: "Kokpitte, dikey tırmanışta", en: "In the cockpit during a vertical climb" } },
-  { src: "/images/galeri/17-gokyuzunde-semin.jpg", alt: { tr: "Yeni Menekşe gökyüzünde", en: "The New Violet in the sky" } },
-  { src: "/images/galeri/09-ustten-gorunum.jpg", alt: { tr: "Semin'in uçağı üstten", en: "Semin's aircraft from above" } },
-  { src: "/images/galeri/10-piper-cub.jpg", alt: { tr: "Piper Cub uçağı", en: "Piper Cub aircraft" } },
-  { src: "/images/galeri/11-cekim.jpg", alt: { tr: "Reklam çekimi", en: "Commercial shoot" } },
-  { src: "/images/galeri/18-kanat-ve-duman.jpg", alt: { tr: "Kanattan duman izi", en: "Smoke trail seen from the wing" } },
-  { src: "/images/galeri/20-siyah-beyaz.jpg", alt: { tr: "Uçağıyla siyah beyaz portre", en: "Black-and-white portrait with her aircraft" } },
-  { src: "/images/galeri/19-kuyruktan-kokpit.jpg", alt: { tr: "Kuyruk kamerasından kokpit", en: "The cockpit seen from the tail camera" } },
-  { src: "/images/galeri/14-kanat-ustu.jpg", alt: { tr: "Kanat üstünden uçuş", en: "Flight seen from above the wing" } },
-  { src: "/images/galeri/21-boeing-stearman.jpg", alt: { tr: "Boeing Stearman pistte", en: "Boeing Stearman on the runway" } },
-  { src: "/images/galeri/22-tirmanis.jpg", alt: { tr: "Boeing Stearman gökyüzünde", en: "Boeing Stearman in flight" } },
-  { src: "/images/galeri/25-duman-izi.jpg", alt: { tr: "Duman iziyle tırmanış", en: "Climbing with a smoke trail" } },
+const galleryPhotos: { src: string; aspect: number; alt: Tx }[] = [
+  { src: "/images/galeri/01-izmir-airshow.jpg", aspect: 1198 / 960, alt: { tr: "İzmir Körfezi'nde gösteri", en: "Air show over the Gulf of Izmir" } },
+  { src: "/images/galeri/02-cumhuriyet-fotografi.jpg", aspect: 1000 / 694, alt: { tr: "Cumhuriyet fotoğrafı — ay yıldız", en: "Republic Day photo — crescent and star" } },
+  { src: "/images/galeri/05-airact.jpg", aspect: 1440 / 810, alt: { tr: "AirACT logolu uçak", en: "Aircraft with the AirACT logo" } },
+  { src: "/images/galeri/06-seyirciler-arasinda.jpg", aspect: 1600 / 645, alt: { tr: "Semin seyirciler arasında", en: "Semin among the spectators" } },
+  { src: "/images/galeri/24-ters-ucus.jpg", aspect: 1092 / 1162, alt: { tr: "Ters uçuşta", en: "Flying inverted" } },
+  { src: "/images/galeri/16-pistte-yansima.jpg", aspect: 1600 / 1066, alt: { tr: "Semin ve uçağı ıslak pistte", en: "Semin and her aircraft on the wet runway" } },
+  { src: "/images/galeri/07-gosteri-alani.jpg", aspect: 1600 / 1063, alt: { tr: "Gösteri alanında Yeni Menekşe", en: "The New Violet at the show grounds" } },
+  { src: "/images/galeri/08-tutima-academy-ilk-ucus.jpg", aspect: 968 / 1296, alt: { tr: "Tutima Academy'de ilk uçuş", en: "First flight at Tutima Academy" } },
+  { src: "/images/galeri/23-kokpitte.jpg", aspect: 279 / 399, alt: { tr: "Kokpitte, dikey tırmanışta", en: "In the cockpit during a vertical climb" } },
+  { src: "/images/galeri/17-gokyuzunde-semin.jpg", aspect: 1600 / 986, alt: { tr: "Yeni Menekşe gökyüzünde", en: "The New Violet in the sky" } },
+  { src: "/images/galeri/09-ustten-gorunum.jpg", aspect: 1440 / 1440, alt: { tr: "Semin'in uçağı üstten", en: "Semin's aircraft from above" } },
+  { src: "/images/galeri/10-piper-cub.jpg", aspect: 737 / 478, alt: { tr: "Piper Cub uçağı", en: "Piper Cub aircraft" } },
+  { src: "/images/galeri/11-cekim.jpg", aspect: 799 / 533, alt: { tr: "Reklam çekimi", en: "Commercial shoot" } },
+  { src: "/images/galeri/18-kanat-ve-duman.jpg", aspect: 950 / 532, alt: { tr: "Kanattan duman izi", en: "Smoke trail seen from the wing" } },
+  { src: "/images/galeri/20-siyah-beyaz.jpg", aspect: 720 / 529, alt: { tr: "Uçağıyla siyah beyaz portre", en: "Black-and-white portrait with her aircraft" } },
+  { src: "/images/galeri/19-kuyruktan-kokpit.jpg", aspect: 1600 / 795, alt: { tr: "Kuyruk kamerasından kokpit", en: "The cockpit seen from the tail camera" } },
+  { src: "/images/galeri/14-kanat-ustu.jpg", aspect: 1280 / 720, alt: { tr: "Kanat üstünden uçuş", en: "Flight seen from above the wing" } },
+  { src: "/images/galeri/21-boeing-stearman.jpg", aspect: 732 / 485, alt: { tr: "Boeing Stearman pistte", en: "Boeing Stearman on the runway" } },
+  { src: "/images/galeri/22-tirmanis.jpg", aspect: 758 / 505, alt: { tr: "Boeing Stearman gökyüzünde", en: "Boeing Stearman in flight" } },
+  { src: "/images/galeri/25-duman-izi.jpg", aspect: 486 / 376, alt: { tr: "Duman iziyle tırmanış", en: "Climbing with a smoke trail" } },
 ];
 
-// Mozaik: 5'li gruplar — her grupta 1 büyük + 4 küçük kare, büyük kare sırayla sol/sağ
-const PhotoMosaic: React.FC<{ photos: { src: string; alt: string }[] }> = ({ photos }) => {
+// Fotoğraflar kırpılmadan, kendi oranlarında: her satırdaki fotoğraflar aynı yükseklikte, satırı tam doldurur.
+// Yöntem: her öğenin hem flex-basis'i hem flex-grow'u oranıyla orantılı → satırda kalan boşluk
+// oranlara göre paylaşılır, böylece yükseklikler eşit kalır. Sondaki görünmez dolgu son satırı germez.
+type GalleryPhoto = { src: string; alt: string; aspect: number };
+const PhotoGrid: React.FC<{ photos: GalleryPhoto[] }> = ({ photos }) => {
   const t = useT();
   const { open, lightbox } = useLightbox(photos, { captions: false });
-  const groups: { src: string; alt: string; idx: number }[][] = [];
-  for (let i = 0; i < photos.length; i += 5) groups.push(photos.slice(i, i + 5).map((p, k) => ({ ...p, idx: i + k })));
-
   return (
     <>
-      <div className="space-y-3 md:space-y-4 mb-20">
-        {groups.map((g, gi) => (
-          <div key={gi} className="grid grid-cols-2 md:grid-cols-4 md:grid-flow-dense gap-3 md:gap-4">
-            {g.map((p, k) => (
-              <button
-                key={p.src}
-                onClick={() => open(p.idx)}
-                data-reveal-img
-                data-reveal-delay={String(k + 1)}
-                className={`group relative aspect-square overflow-hidden bg-white/5 ${
-                  k === 0 ? `col-span-2 row-span-2 ${gi % 2 ? "md:col-start-3" : ""}` : ""
-                }`}
-                aria-label={`${p.alt} — ${t("büyüt", "enlarge")}`}
-              >
-                <img src={p.src} alt={p.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105" />
-                <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></span>
-              </button>
-            ))}
-          </div>
+      <div className="flex flex-wrap gap-2 md:gap-3 mb-20 [--row:120px] sm:[--row:180px] md:[--row:240px]">
+        {photos.map((p, i) => (
+          <button
+            key={p.src}
+            onClick={() => open(i)}
+            data-reveal-img
+            data-reveal-delay={String((i % 4) + 1)}
+            style={{ flex: `${p.aspect} 1 calc(var(--row) * ${p.aspect})` }}
+            className="group relative overflow-hidden bg-white/5"
+            aria-label={`${p.alt} — ${t("büyüt", "enlarge")}`}
+          >
+            <img src={p.src} alt={p.alt} loading="lazy" className="block w-full h-auto transition-transform duration-[1200ms] group-hover:scale-105" />
+            <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"></span>
+          </button>
         ))}
+        <span aria-hidden="true" style={{ flex: "1000 1 0%" }}></span>
       </div>
       {lightbox}
     </>
@@ -259,7 +254,7 @@ const Media: React.FC = () => {
           <span className="text-[#E02F3C] text-xs font-black italic tracking-[0.3em] uppercase">{t("Fotoğraflar", "Photos")}</span>
           <span className="flex-1 h-px bg-white/10"></span>
         </div>
-        <PhotoMosaic photos={galleryPhotos.map((p) => ({ src: p.src, alt: pick(p.alt, lang) }))} />
+        <PhotoGrid photos={galleryPhotos.map((p) => ({ src: p.src, aspect: p.aspect, alt: pick(p.alt, lang) }))} />
 
       </div>
     </section>
